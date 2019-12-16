@@ -43,8 +43,15 @@ public class LinksViewController {
             AddDialogViewController controller = getAddDialogViewController();
             for (Link l : controller.getLinksList()) {
                 // System.out.println("in link view controller " + l.getUrl().getValue());
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("LinkSampleView.fxml"));
                 TitledPane t = new TitledPane();
-                t.setAnimated(true);
+                try {
+                    t = (TitledPane) loader.load();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
                 t.setText(l.getUrl().getValue());
                 linksGroup.getPanes().add(t);
             }

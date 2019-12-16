@@ -63,10 +63,6 @@ hs_err_pid*
 ### INTELLIJ ###
 .idea/*
 
-### COMMIT MESSAGE TEST FILE ###
-
-.commitMessageSetup.txt
-
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
 .history
