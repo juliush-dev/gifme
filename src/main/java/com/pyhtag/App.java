@@ -3,7 +3,6 @@ package com.pyhtag;
 import java.io.IOException;
 
 import com.pyhtag.view.AddDialogViewController;
-import com.pyhtag.view.LinksViewController;
 import com.pyhtag.view.RootViewController;
 
 import javafx.application.Application;
@@ -58,44 +57,7 @@ public class App extends Application {
         }
     }
 
-    // public void setUpLinksView(){
-    //     FXMLLoader loader = new FXMLLoader();
-    //     loader.setLocation(getClass().getResource("view/LinksView.fxml"));
-    //     BorderPane linksRoot = new BorderPane();
-    //     try {
-    //         linksRoot = (BorderPane) loader.load();
-    //         System.out.println(linksRoot);
-    //         // rootLayout.setCenter(linksRoot);
-    //     } catch (IOException e) {
-    //         // TODO Auto-generated catch block
-    //         e.printStackTrace();
-    //     }
-    //     LinksViewController linksViewController = loader.getController();
-    //     linksViewController.setApp(this);
-    // }
-
-    public boolean showAddDialogView(String links) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("view/AddDialogView.fxml"));
-        VBox page = new VBox();
-        try {
-            page = (VBox) loader.load();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        Stage dialogStage = new Stage();
-        dialogStage.setTitle("Add Links");
-        dialogStage.initModality(Modality.WINDOW_MODAL);
-        dialogStage.initOwner(primaryStage);
-        Scene scene = new Scene(page);
-        dialogStage.setScene(scene);
-        addDialogViewController = loader.getController();
-        addDialogViewController.setDialogStage(dialogStage);
-        addDialogViewController.setLinks(links);
-        dialogStage.showAndWait();
-        return addDialogViewController.isDoneClicked();
-    }
+    
 
     public AddDialogViewController getAddDialogViewController(){
         return addDialogViewController;
