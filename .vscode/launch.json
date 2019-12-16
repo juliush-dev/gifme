@@ -1,0 +1,12 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - App",
+            "request": "launch",
+            "mainClass": "com.pyhtag.App",
+            "projectName": "gifme",
+            "vmArgs": "--module-path ~/javafx-sdk-13.0.1/lib --add-modules javafx.controls,javafx.fxml"
+        }
+    ]
+}

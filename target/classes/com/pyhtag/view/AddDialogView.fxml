@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="445.0" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pyhtag.view.AddDialogViewController">
+   <children>
+      <TextArea fx:id="textArea" prefHeight="263.0" prefWidth="445.0" wrapText="true" />
+      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <Button fx:id="done" layoutX="196.0" layoutY="1.0" mnemonicParsing="false" onAction="#handleDone" text="Done" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="196.0" AnchorPane.rightAnchor="196.0" AnchorPane.topAnchor="1.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

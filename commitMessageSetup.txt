@@ -1,0 +1,15 @@
+Fix Null. Exception when pressing add button
+
+Include the LinksView.XML directly in the RootView.fxmland give it
+an id(linksView) to refer to instead of using a method to embed it 
+(LinksView) in the center of RootView.
+
+Refer this id in the RootViewController in order to have access to
+the referenced rootPane object and to its Controller.
+
+Setup the LinksViewController when initializing the RootViewController
+in order to load the main application with this view opening and the
+important variable of the LinksView initialized.
+
+Doing like that avoid using another method in the main App to set up
+the link view and then embed it with a java code into the root view.
