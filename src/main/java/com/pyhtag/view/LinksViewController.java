@@ -2,7 +2,6 @@ package com.pyhtag.view;
 
 import java.io.IOException;
 
-import com.pyhtag.App;
 import com.pyhtag.model.Link;
 
 import javafx.fxml.FXML;
@@ -27,7 +26,6 @@ public class LinksViewController {
     private Button delete;
     @FXML
     private Button process;
-    private App app;
     private AddDialogViewController addDialogViewController;
 
 
@@ -49,7 +47,6 @@ public class LinksViewController {
                 try {
                     t = (TitledPane) loader.load();
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 t.setText(l.getUrl().getValue());
@@ -96,11 +93,5 @@ public class LinksViewController {
         
         
     }
-
-    public void setApp(App app){
-        this.app = app;
-    }
-
-
 
 }

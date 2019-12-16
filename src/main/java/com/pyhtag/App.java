@@ -44,8 +44,6 @@ public class App extends Application {
             RootViewController rootViewController = loader.getController();
             System.out.println(rootViewController);
             System.out.println(rootViewController.getLinksViewController());
-            rootViewController.getLinksViewController().setApp(this);
-            // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
             System.out.println();

@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -26,9 +27,18 @@ public class AddDialogViewController {
     private Stage dialoStage;
     private StringProperty links = new SimpleStringProperty();
     private BooleanProperty doneClicked = new SimpleBooleanProperty(false);
+    private ListChangeListener.Change<Link> changeInLinksList;
 
     @FXML
     public void initialize() {
+
+        linksList.addListener((ListChangeListener<Link>) c -> {
+            while (c.next()) {
+                if (c.wasAdded()) {
+                    System.out.println("Was Added");
+                }
+            }
+        });
 
     }
 
@@ -56,7 +66,7 @@ public class AddDialogViewController {
 
     }
 
-    public ObservableList<Link> getLinksList(){
+    public ObservableList<Link> getLinksList() {
         return linksList;
     }
 
