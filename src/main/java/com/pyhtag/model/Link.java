@@ -28,8 +28,8 @@ public class Link {
         return titel;
     }
 
-    public StringProperty getUrl() {
-        return url;
+    public String getUrl() {
+        return url.get();
     }
 
     public StringProperty getTitel() {

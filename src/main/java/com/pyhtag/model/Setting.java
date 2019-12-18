@@ -1,15 +1,18 @@
 package com.pyhtag.model;
 
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class Setting {
     private BooleanProperty audio = new SimpleBooleanProperty();
     private BooleanProperty video = new SimpleBooleanProperty();
     private BooleanProperty thumbnail = new SimpleBooleanProperty();
-    private IntegerProperty videoId = new SimpleIntegerProperty();
+    private StringProperty gifmeId = new SimpleStringProperty();
+    private ObservableList<Format> availableVideoFormats = FXCollections.observableArrayList();
 
     /**
      * @return the isAudio
@@ -29,6 +32,19 @@ public class Setting {
         return audio;
     }
 
+    public String getGifmeId() {
+        return this.gifmeId.get();
+    }
+
+    public void setGifmeId(String gifmeId) {
+        this.gifmeId.set(gifmeId);
+    }
+
+    public StringProperty gifmeIdProperty() {
+        return this.gifmeId;
+    }
+    
+
     /**
      * @return the isVideo
      */
@@ -45,18 +61,6 @@ public class Setting {
 
     public BooleanProperty videoProperty() {
         return video;
-    }
-
-    public int getVideoId() {
-        return videoId.getValue();
-    }
-
-    public void setVideoId(int value) {
-        videoId.set(value);
-    }
-
-    public IntegerProperty videoIdProperty() {
-        return videoId;
     }
 
     /**
