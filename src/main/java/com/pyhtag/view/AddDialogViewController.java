@@ -94,7 +94,6 @@ public class AddDialogViewController {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("LinkSampleView.fxml"));
         TitledPane t = new TitledPane();
-        LinkSampleViewController controller = loader.getController();
         try {
             t = (TitledPane) loader.load();
         } catch (IOException e) {
