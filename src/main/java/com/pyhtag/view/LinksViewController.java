@@ -3,6 +3,7 @@ package com.pyhtag.view;
 import java.io.IOException;
 
 import com.pyhtag.model.Link;
+import com.pyhtag.util.EmployeeGetMoreInformation;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -20,33 +21,6 @@ import javafx.stage.Stage;
  * LinksViewController
  */
 public class LinksViewController {
-
-    /**
-     * EmployeeThread1 extends {@link Thread}
-     */
-    class EmployeeThread1 extends Thread {
-        private ObservableList<Link> list;
-        private int index;
-
-        public EmployeeThread1(ObservableList<Link> list, int index) {
-            this.list = list;
-            this.index = index;
-        }
-
-        public int getIndex() {
-            return index;
-        }
-
-        public void setIndex(int index) {
-            this.index = index;
-        }
-
-        public void run() {
-            System.out.println(index + " " + list.get(index).getUrl());
-            EmployeeGetMoreInformationThread e = new EmployeeGetMoreInformationThread(list.get(index), index);
-            e.start();
-        }
-    }
 
     @FXML
     private Accordion linksGroup;
@@ -71,12 +45,17 @@ public class LinksViewController {
 
     public void initialize() {
         linksList.addListener((ListChangeListener<Link>) c -> {
-            EmployeeThread1 t = new EmployeeThread1(linksList, 0);
+            EmployeeGetMoreInformation getMoreInformation = new EmployeeGetMoreInformation();
             while (c.next()) {
                 if (c.wasAdded()) {
                     for (int i = c.getFrom(); i < c.getTo(); ++i) {
-                        t.setIndex(i);
-                        t.start();
+                        getMoreInformation.setLink(linksList.get(i));
+                        getMoreInformation.setIndex(i);
+                        Thread threadInfoFinder = new Thread(EmployeeGetMoreInformation.getGroup(), getMoreInformation,
+                                getMoreInformation.getName() + "-" + i);
+                        threadInfoFinder.setDaemon(true);
+                        System.out.println(getMoreInformation.getName() + " Daemon? " + threadInfoFinder.isDaemon());
+                        threadInfoFinder.start();
                     }
                 }
             }

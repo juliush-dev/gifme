@@ -7,9 +7,12 @@ public class Link {
     private StringProperty url = new SimpleStringProperty();
     private StringProperty title = new SimpleStringProperty();
     private Setting downloadSettings = new Setting();
+    private static int intanceCount = 0;
+    private StringProperty rang = new SimpleStringProperty();
 
     public Link(String url) {
         this.url.set(url);
+        rang.set("(" + intanceCount++ + ") ");
     }
 
     public void setUrl(String url) {
@@ -57,6 +60,14 @@ public class Link {
             " title='" + getTitle() + "'\n" +
             " downloadSettings='" + getDownloadSettings() + "'" +
             "}\n";
+    }
+
+    public static int getInstanceCount(){
+        return intanceCount;
+    }
+
+    public StringProperty rangProperty() {
+        return rang;
     }
 
     

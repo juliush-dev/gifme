@@ -112,22 +112,22 @@ public class AddDialogViewController {
         // controller.getAudioSettingView().setDisable(true);
         controller.getVideo().setIndeterminate(false);
         controller.getAudio().setIndeterminate(false);
-        view.textProperty().bind(link.urlProperty());
+        view.textProperty().bind(link.rangProperty().concat(link.urlProperty()));
         controller.getVideoSettingView().setDisable(true);
         controller.getAudioSettingView().setDisable(true);
-        controller.getVideo().selectedProperty().addListener((observableValue, oldValue, newValue)->{
-            if(!newValue){
+        controller.getVideo().selectedProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (!newValue) {
                 controller.getVideoThumbnail().setSelected(newValue);
                 controller.getVideoSettingView().setDisable(!newValue);
-            }else{
+            } else {
                 controller.getVideoSettingView().setDisable(!newValue);
             }
         });
-        controller.getAudio().selectedProperty().addListener((observableValue, oldValue, newValue)->{
-            if(!newValue){
+        controller.getAudio().selectedProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (!newValue) {
                 controller.getAudioThumbnail().setSelected(newValue);
                 controller.getAudioSettingView().setDisable(!newValue);
-            }else{
+            } else {
                 controller.getAudioSettingView().setDisable(!newValue);
             }
         });
@@ -225,23 +225,29 @@ public class AddDialogViewController {
      * @throws IOException
      */
     private void addToLinksList() throws IOException {
-        if (!textArea.getText().isEmpty() && textArea.getText().matches(".+[^;];")) {
-            String[] formated = textArea.getText().split("[;]");
-            for (String url : formated) {
-                FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("LinkSampleView.fxml"));
-                Link link = new Link(url);
-                TitledPane t = loader.load();
-                initializeTheBinding(link, t, loader.getController());
-                // t.setText(link.getUrl());
-                if (linksViewController != null) {
-                    linksViewController.getLinksGroup().getPanes().add(t);
-                    linksViewController.getLinksList().add(link);
-                    // System.out.println("Sure i was here");
-                } else {
-                    System.err.println("linksViewController points to null");
+        if (!textArea.getText().isEmpty()) {
+            String userInput = textArea.getText().trim();
+            Pattern pattern = Pattern.compile("^(https://).+[^;];");
+            Matcher matcher = pattern.matcher(userInput);
+            if (matcher.find()) {
+                String[] formated = userInput.split("[;]");
+                for (String url : formated) {
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(getClass().getResource("LinkSampleView.fxml"));
+                    Link link = new Link(url);
+                    TitledPane t = loader.load();
+                    initializeTheBinding(link, t, loader.getController());
+                    // t.setText(link.getUrl());
+                    if (linksViewController != null) {
+                        linksViewController.getLinksGroup().getPanes().add(t);
+                        linksViewController.getLinksList().add(link);
+                        // System.out.println("Sure i was here");
+                    } else {
+                        System.err.println("linksViewController points to null");
+                    }
                 }
             }
+
         }
     }
 

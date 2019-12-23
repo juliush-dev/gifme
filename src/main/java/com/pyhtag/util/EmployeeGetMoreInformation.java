@@ -1,4 +1,4 @@
-package com.pyhtag.view;
+package com.pyhtag.util;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,25 +9,28 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pyhtag.model.Format;
 import com.pyhtag.model.Link;
 
-public class EmployeeGetMoreInformationThread extends Thread {
+public class EmployeeGetMoreInformation implements Runnable {
+
     private Link link;
     private int index;
+    private String name = "infoFinder";
     private final String skipDownload = "--skip-download";
     private final String dumpJson = "--dump-json";
     private ObjectMapper objectMapper = new ObjectMapper();
     private JsonNode root;
-    private static ThreadGroup infoFinder = new ThreadGroup("coor");
+    private static ThreadGroup infoFinder = new ThreadGroup("retrievesMoreInfo");
 
-    public EmployeeGetMoreInformationThread(Link link, int index) {
-        super(infoFinder, "infoFinder");
+    public EmployeeGetMoreInformation(Link link, int index) {
         this.link = link;
         this.index = index;
     }
-    public EmployeeGetMoreInformationThread(){
 
+    public EmployeeGetMoreInformation() {
     }
 
+    @Override
     public void run() {
+        name = "infoFinder-" + index;
         System.out.println("+++ Start working on " + index + " : " + link.getUrl() + " +++");
         try {
             initField();
@@ -63,14 +66,20 @@ public class EmployeeGetMoreInformationThread extends Thread {
         root = objectMapper.readTree(jsonData);
     }
 
-    public ThreadGroup getInfoFinder() {
+    public static ThreadGroup getGroup() {
         return infoFinder;
     }
 
-    public void setLink(Link link){
+    public void setLink(Link link) {
         this.link = link;
     }
-    public void setIndex(int index){
+
+    public void setIndex(int index) {
         this.index = index;
     }
+
+    public String getName() {
+        return name;
+    }
+
 }
