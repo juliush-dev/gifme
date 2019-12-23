@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
 import com.pyhtag.model.Format;
 import com.pyhtag.model.Link;
 
-import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -72,30 +71,7 @@ public class AddDialogViewController {
 
     @FXML
     public void initialize() {
-        textArea.textProperty().addListener((observable, oldValue, newValue) -> {
-            addToLinkList(newValue);
-        });
 
-    }
-
-    private AddDialogViewController.LinkViewRelationBuilder generateNewLinkFrom(String value) {
-        String url = value.substring(0, value.length() - 2);
-        Link link = new Link(url);
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("LinkSampleView.fxml"));
-        TitledPane t = new TitledPane();
-        try {
-            t = (TitledPane) loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        t.setText(link.getUrl());
-        if (linksViewController != null) {
-            linksViewController.getLinksList().add(link);
-        } else {
-            System.err.println("genrateNewLinkFrom: linksViewController points to null");
-        }
-        return this.new LinkViewRelationBuilder(link, t, loader.getController());
     }
 
     /**
@@ -248,32 +224,6 @@ public class AddDialogViewController {
                 }
             }
 
-        }
-    }
-
-    /**
-     * Adds one Link to the LinkList, generates its view representation and bind
-     * this view to this link. This method is called as soon as the user appends ;;
-     * at the end of a link. This symbol means i'm done i just wanted to add one
-     * url.
-     * 
-     * @param newValue
-     */
-    private void addToLinkList(String newValue) {
-        if (newValue.matches("^(https:).+(;;)$")) {
-            AddDialogViewController.LinkViewRelationBuilder relation = generateNewLinkFrom(newValue);
-            // https://www.youtube.com/watch?v=Rb-dTP37QVU&t=1871s
-            if (linksViewController != null) {
-                linksViewController.getLinksGroup().getPanes().add(relation.getView());
-                System.out.println("genrateNewLinkFrom: link added in linksView");
-            } else {
-                throw new NullPointerException();
-            }
-            Platform.runLater(() -> {
-                textArea.clear();
-            });
-            handleDone();
-            initializeTheBinding(relation.getLink(), relation.getView(), relation.getViewController());
         }
     }
 
