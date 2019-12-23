@@ -17,35 +17,36 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
- * EmployeeThread1 extends {@link Thread}
- */
-class EmployeeThread1 extends Thread {
-    private ObservableList<Link> list;
-    private int index;
-
-    public EmployeeThread1(ObservableList<Link> list, int index) {
-        this.list = list;
-        this.index = index;
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
-    }
-
-    public void run() {
-        System.out.println(index + " " + list.get(index).getUrl());
-    }
-
-}
-
-/**
  * LinksViewController
  */
 public class LinksViewController {
+
+    /**
+     * EmployeeThread1 extends {@link Thread}
+     */
+    class EmployeeThread1 extends Thread {
+        private ObservableList<Link> list;
+        private int index;
+
+        public EmployeeThread1(ObservableList<Link> list, int index) {
+            this.list = list;
+            this.index = index;
+        }
+
+        public int getIndex() {
+            return index;
+        }
+
+        public void setIndex(int index) {
+            this.index = index;
+        }
+
+        public void run() {
+            System.out.println(index + " " + list.get(index).getUrl());
+            EmployeeGetMoreInformationThread e = new EmployeeGetMoreInformationThread(list.get(index), index);
+            e.start();
+        }
+    }
 
     @FXML
     private Accordion linksGroup;

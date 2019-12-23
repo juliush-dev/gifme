@@ -8,10 +8,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class Setting {
-    private BooleanProperty audio = new SimpleBooleanProperty();
-    private BooleanProperty video = new SimpleBooleanProperty();
-    private BooleanProperty thumbnail = new SimpleBooleanProperty();
+    private BooleanProperty audio = new SimpleBooleanProperty(false);
+    private BooleanProperty video = new SimpleBooleanProperty(false);
+    private BooleanProperty videoThumbnail = new SimpleBooleanProperty(false);
+    private BooleanProperty audioThumbnail = new SimpleBooleanProperty();
     private StringProperty gifmeId = new SimpleStringProperty();
+    private StringProperty audioFormat = new SimpleStringProperty();
     private ObservableList<Format> availableVideoFormats = FXCollections.observableArrayList();
 
     /**
@@ -43,7 +45,6 @@ public class Setting {
     public StringProperty gifmeIdProperty() {
         return this.gifmeId;
     }
-    
 
     /**
      * @return the isVideo
@@ -63,22 +64,59 @@ public class Setting {
         return video;
     }
 
-    /**
-     * @return the isThumbnail
-     */
-    public boolean isThumbnail() {
-        return thumbnail.getValue();
+    public boolean getVideoThumbnail() {
+        return this.videoThumbnail.get();
     }
 
-    /**
-     * @param audio the audio to set
-     */
-    public void setThumbnail(boolean value) {
-        thumbnail.set(value);
+    public void setVideoThumbnail(boolean videoThumbnail) {
+        this.videoThumbnail.set(videoThumbnail);
     }
 
-    public BooleanProperty thumbnailProperty() {
-        return thumbnail;
+    public BooleanProperty videoThumbnailProperty() {
+        return this.videoThumbnail;
+    }
+
+    public boolean getAudioThumbnail() {
+        return this.audioThumbnail.get();
+    }
+
+    public void setAudioThumbnail(boolean audioThumbnail) {
+        this.audioThumbnail.set(audioThumbnail);
+    }
+
+    public BooleanProperty audioThumbnailProperty() {
+        return this.audioThumbnail;
+    }
+
+    public ObservableList<Format> getAvailableVideoFormats() {
+        return this.availableVideoFormats;
+    }
+
+    public void setAvailableVideoFormats(ObservableList<Format> availableVideoFormats) {
+        this.availableVideoFormats = availableVideoFormats;
+    }
+
+    public String getAudioFormat() {
+        return this.audioFormat.get();
+    }
+
+    public void setAudioFormat(String audioFormat) {
+        this.audioFormat.set(audioFormat);
+    }
+
+    public StringProperty audioFormatProperty() {
+        return this.audioFormat;
+    }
+
+    @Override
+    public String toString() {
+        String formats = "";
+        for (Format format : availableVideoFormats) {
+            formats += "    \n" + format.toString();
+        }
+        return "{" + "   audio='" + audio.get() + "'\n" + "   video='" + video.get() + "'\n" + "   VideoThumbnail='"
+                + videoThumbnail.get() + "'\n" + "   AudioThumbnail='" + audioThumbnail.get() + "'\n" + "   gifmeId='"
+                + gifmeId.get() + "'\n" + " availableVideoFormats='" + formats + "'" + " }\n";
     }
 
 }

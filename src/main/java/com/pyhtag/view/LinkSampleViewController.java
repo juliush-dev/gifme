@@ -41,7 +41,6 @@ public class LinkSampleViewController {
 
     }
 
-
     public TitledPane getUrl() {
         return this.url;
     }
@@ -114,16 +113,13 @@ public class LinkSampleViewController {
         this.audioFormatSelection = audioFormatSelection;
     }
 
-
-
-    public AnchorPane getSettingView() {
+    public AnchorPane getVideoSettingView() {
         return this.videoSettingView;
     }
 
     public void setSettingView(AnchorPane settingView) {
         this.videoSettingView = settingView;
     }
-
 
     public AnchorPane getAudioSettingView() {
         return this.audioSettingView;
@@ -132,7 +128,5 @@ public class LinkSampleViewController {
     public void setAudioSettingView(AnchorPane audioSettingView) {
         this.audioSettingView = audioSettingView;
     }
-
-
 
 }

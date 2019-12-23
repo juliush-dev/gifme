@@ -1,12 +1,13 @@
 package com.pyhtag.model;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Format {
 
-    private StringProperty ext;
-    private StringProperty formatId;
-    private StringProperty formatDescription;
+    private StringProperty ext = new SimpleStringProperty();
+    private StringProperty formatId = new SimpleStringProperty();
+    private StringProperty formatDescription = new SimpleStringProperty();
 
     public Format(StringProperty ext, StringProperty formatId, StringProperty formatDescription) {
         this.ext = ext;
@@ -53,5 +54,16 @@ public class Format {
     public StringProperty formatDescriptionProperty() {
         return formatDescription;
     }
+
+
+    @Override
+    public String toString() {
+        return "{" +
+            " ext='" + getExt() + "'" +
+            ", formatId='" + getFormatId() + "'" +
+            ", formatDescription='" + getFormatDescription() + "'" +
+            "}";
+    }
+
 
 }
