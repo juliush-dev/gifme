@@ -2,18 +2,21 @@ package com.pyhtag.view;
 
 import java.io.IOException;
 
-import com.pyhtag.App;
 import com.pyhtag.model.Link;
+import com.pyhtag.util.EmployeeGetMoreInformation;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
-import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 /**
  * LinksViewController
  */
@@ -27,9 +30,8 @@ public class LinksViewController {
     private Button delete;
     @FXML
     private Button process;
-    private App app;
     private AddDialogViewController addDialogViewController;
-
+    private ObservableList<Link> linksList = FXCollections.observableArrayList();
 
     public Accordion getLinksGroup() {
         return linksGroup;
@@ -38,25 +40,26 @@ public class LinksViewController {
     @FXML
     private void handleAddNewLinks() {
         String links = "";
-        boolean doneClicked = showAddDialogView(links);
-        if(doneClicked){
-            AddDialogViewController controller = getAddDialogViewController();
-            for (Link l : controller.getLinksList()) {
-                // System.out.println("in link view controller " + l.getUrl().getValue());
-                FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("LinkSampleView.fxml"));
-                TitledPane t = new TitledPane();
-                try {
-                    t = (TitledPane) loader.load();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+        showAddDialogView(links);
+    }
+
+    public void initialize() {
+        linksList.addListener((ListChangeListener<Link>) c -> {
+            EmployeeGetMoreInformation getMoreInformation = new EmployeeGetMoreInformation();
+            while (c.next()) {
+                if (c.wasAdded()) {
+                    for (int i = c.getFrom(); i < c.getTo(); ++i) {
+                        getMoreInformation.setLink(linksList.get(i));
+                        getMoreInformation.setIndex(i);
+                        Thread threadInfoFinder = new Thread(EmployeeGetMoreInformation.getGroup(), getMoreInformation,
+                                getMoreInformation.getName() + "-" + i);
+                        threadInfoFinder.setDaemon(true);
+                        System.out.println(getMoreInformation.getName() + " Daemon? " + threadInfoFinder.isDaemon());
+                        threadInfoFinder.start();
+                    }
                 }
-                t.setText(l.getUrl().getValue());
-                linksGroup.getPanes().add(t);
             }
-        }
-        
+        });
     }
 
     public boolean showAddDialogView(String links) {
@@ -77,30 +80,27 @@ public class LinksViewController {
         addDialogViewController = loader.getController();
         addDialogViewController.setDialogStage(dialogStage);
         addDialogViewController.setLinks(links);
+        addDialogViewController.setControllerSource(this);
         dialogStage.showAndWait();
         return addDialogViewController.isDoneClicked();
     }
 
-    public AddDialogViewController getAddDialogViewController(){
+    public AddDialogViewController getAddDialogViewController() {
         return addDialogViewController;
     }
 
     @FXML
     private void handleDelteLinks() {
-        
-        
+
     }
 
     @FXML
     private void handleProcessLinks() {
-        
-        
+
     }
 
-    public void setApp(App app){
-        this.app = app;
+    public ObservableList<Link> getLinksList() {
+        return linksList;
     }
-
-
 
 }

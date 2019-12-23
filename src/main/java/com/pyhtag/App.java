@@ -1,9 +1,10 @@
 package com.pyhtag;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import com.pyhtag.view.AddDialogViewController;
-import com.pyhtag.view.RootViewController;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -29,10 +30,19 @@ public class App extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Get it for me");
         this.primaryStage.setResizable(false);
+        Runtime r = Runtime.getRuntime();
+        try {
+            String s;
+            Process p = r.exec("fc-list | grep \"fira\"");
+            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            while ((s = br.readLine()) != null) {
+                System.out.println(s);
+            }
+            p.destroy();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         initRootLayout();
-        // setUpLinksView();
-        // showMediaFrame();
-        // setMainApp();
     }
 
     private void initRootLayout() {
@@ -41,14 +51,8 @@ public class App extends Application {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(App.class.getResource("view/RootView.fxml"));
             rootLayout = (BorderPane) loader.load();
-            RootViewController rootViewController = loader.getController();
-            System.out.println(rootViewController);
-            System.out.println(rootViewController.getLinksViewController());
-            rootViewController.getLinksViewController().setApp(this);
-            // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
-            System.out.println();
             primaryStage.show();
         } catch (IOException e) {
             e.printStackTrace();

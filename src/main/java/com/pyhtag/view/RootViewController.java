@@ -3,7 +3,7 @@ package com.pyhtag.view;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
 
-public class RootViewController {
+public class RootViewController{
     @FXML
     private BorderPane root;
     @FXML
