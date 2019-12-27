@@ -55,15 +55,8 @@ public class Format {
         return formatDescription;
     }
 
-
-    @Override
-    public String toString() {
-        return "{" +
-            " ext='" + getExt() + "'" +
-            ", formatId='" + getFormatId() + "'" +
-            ", formatDescription='" + getFormatDescription() + "'" +
-            "}";
-    }
-
-
+	@Override
+	public String toString() {
+		return "Format [ext=" + ext + ", \nformatId=" + formatId + ", \nformatDescription=" + formatDescription + "]";
+	}
 }

@@ -5,7 +5,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="397.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pyhtag.view.RootViewController">
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="397.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pyhtag.view.RootViewController">
 	<top>
 		<MenuBar BorderPane.alignment="CENTER">
 			<menus>
@@ -27,5 +27,5 @@
 			</menus>
 		</MenuBar>
 	</top>
-	<center><fx:include fx:id="linksView" source="LinksView.fxml"/></center>
+	<center><fx:include fx:id="linkListView" source="LinkListView.fxml"/></center>
 </BorderPane>

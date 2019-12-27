@@ -1,6 +1,10 @@
 package com.pyhtag.view;
 
+import java.io.IOException;
+
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -11,7 +15,7 @@ import javafx.scene.layout.AnchorPane;
 /**
  * LinkSampleViewController
  */
-public class LinkSampleViewController {
+public class LinkSampleViewController{
 
     @FXML
     private TitledPane url;
@@ -128,5 +132,12 @@ public class LinkSampleViewController {
     public void setAudioSettingView(AnchorPane audioSettingView) {
         this.audioSettingView = audioSettingView;
     }
+
+	public static LinkSampleViewController getInstance() throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(LinkSampleViewController.class.getResource("LinkSampleView.fxml"));
+		TitledPane root = loader.load();
+		return loader.getController();
+	}
 
 }

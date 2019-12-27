@@ -12,9 +12,8 @@ public class Setting {
     private BooleanProperty video = new SimpleBooleanProperty(false);
     private BooleanProperty videoThumbnail = new SimpleBooleanProperty(false);
     private BooleanProperty audioThumbnail = new SimpleBooleanProperty();
-    private StringProperty gifmeId = new SimpleStringProperty();
+    private StringProperty videoId = new SimpleStringProperty();
     private StringProperty audioFormat = new SimpleStringProperty();
-    private ObservableList<Format> availableVideoFormats = FXCollections.observableArrayList();
 
     /**
      * @return the isAudio
@@ -34,16 +33,16 @@ public class Setting {
         return audio;
     }
 
-    public String getGifmeId() {
-        return this.gifmeId.get();
+    public String getVideoId() {
+        return this.videoId.get();
     }
 
-    public void setGifmeId(String gifmeId) {
-        this.gifmeId.set(gifmeId);
+    public void setVideoId(String id) {
+        this.videoId.set(id);
     }
 
     public StringProperty gifmeIdProperty() {
-        return this.gifmeId;
+        return this.videoId;
     }
 
     /**
@@ -88,14 +87,6 @@ public class Setting {
         return this.audioThumbnail;
     }
 
-    public ObservableList<Format> getAvailableVideoFormats() {
-        return this.availableVideoFormats;
-    }
-
-    public void setAvailableVideoFormats(ObservableList<Format> availableVideoFormats) {
-        this.availableVideoFormats = availableVideoFormats;
-    }
-
     public String getAudioFormat() {
         return this.audioFormat.get();
     }
@@ -108,15 +99,12 @@ public class Setting {
         return this.audioFormat;
     }
 
-    @Override
-    public String toString() {
-        String formats = "";
-        for (Format format : availableVideoFormats) {
-            formats += "    \n" + format.toString();
-        }
-        return "{" + "   audio='" + audio.get() + "'\n" + "   video='" + video.get() + "'\n" + "   VideoThumbnail='"
-                + videoThumbnail.get() + "'\n" + "   AudioThumbnail='" + audioThumbnail.get() + "'\n" + "   gifmeId='"
-                + gifmeId.get() + "'\n" + " availableVideoFormats='" + formats + "'" + " }\n";
-    }
+	@Override
+	public String toString() {
+		return "Setting [audio=" + audio + ", \nvideo=" + video + ", \nvideoThumbnail=" + videoThumbnail
+				+ ", \naudioThumbnail=" + audioThumbnail + ", \nvideoId=" + videoId + ", \naudioFormat=" + audioFormat + "]";
+	}
+    
+    
 
 }

@@ -10,16 +10,16 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="368.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pyhtag.view.LinksViewController">
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="368.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pyhtag.view.LinkListViewController">
    <fx:define>
-      <fx:include fx:id="linkSample" source="LinkSampleView.fxml"/>
+      <fx:include fx:id="linkSample" source="LinkSampleView.fxml" />
    </fx:define>
    <center>
       <ScrollPane BorderPane.alignment="CENTER">
         <content>
           <AnchorPane prefWidth="490.0">
                <children>
-                  <Accordion fx:id="linksGroup" prefWidth="490.0" />
+                  <Accordion fx:id="linkListView" prefWidth="490.0" />
                </children>
             </AnchorPane>
         </content>
@@ -37,8 +37,8 @@
             </HBox>
             <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
-                  <ProgressBar prefWidth="200.0" progress="0.0" />
-                  <Label text="0%" />
+                  <ProgressBar fx:id="progressBar" prefWidth="200.0" progress="0.0" />
+                  <Label fx:id="progressLabel" text="0%" />
                </children>
             </HBox>
          </children>

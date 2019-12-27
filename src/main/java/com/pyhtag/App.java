@@ -12,10 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-/**
- * Hello world!
- *
- */
+
 public class App extends Application {
     private Stage primaryStage;
     private BorderPane rootLayout;
