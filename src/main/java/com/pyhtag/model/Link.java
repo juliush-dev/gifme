@@ -2,86 +2,78 @@ package com.pyhtag.model;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class Link {
-    private StringProperty url = new SimpleStringProperty();
-    private StringProperty title = new SimpleStringProperty();
-    private Setting downloadSettings = new Setting();
-    private static int intanceCount = 0;
-    private StringProperty rang = new SimpleStringProperty();
-    private BooleanBinding process = Bindings.or(downloadSettings.videoProperty(), downloadSettings.audioProperty());
+	private StringProperty url = new SimpleStringProperty();
+	private StringProperty title = new SimpleStringProperty();
+	private Setting setting = new Setting();
+	private ObservableList<String> availableVideoFormats = FXCollections.observableArrayList();
+	private BooleanBinding toGet = Bindings.or(setting.videoProperty(), setting.audioProperty());
+	
+	public Link(String url) {
+		this.url.set(url);
+	}
 
-    public Link(String url) {
-        this.url.set(url);
-        rang.set("(" + intanceCount + ") ");
-        intanceCount++;
-    }
+	public StringProperty urlProperty() {
+		return url;
+	}
+	
+	public String getUrl() {
+		return url.get();
+	}
 
-    public void setUrl(String url) {
-        this.url.set(url);
-    }
+	public void setUrl(String url) {
+		this.url.set(url);
+	}
 
-    public StringProperty urlProperty() {
-        return url;
-    }
+	public StringProperty titleProperty() {
+		return title;
+	}
+	public String getTitle() {
+		return title.get();
+	}
 
-    public void setTitel(String title) {
-        this.title.set(title);
-    }
+	public void setTitle(String title) {
+		this.title.set(title);
+	}
 
-    public StringProperty titelProperty() {
-        return title;
-    }
+	public Setting getSetting() {
+		return setting;
+	}
 
-    public String getUrl() {
-        return url.get();
-    }
+	public void setSetting(Setting setting) {
+		this.setting = setting;
+	}
 
-    public String getTitle() {
-        return title.get();
-    }
-
-    public StringProperty titleProperty(){
-        return title;
-    }
-
-
-    public Setting getDownloadSettings() {
-        return this.downloadSettings;
-    }
-
-    public void setDownloadSettings(Setting downloadSettings) {
-        this.downloadSettings = downloadSettings;
-    }
+	public ObservableList<String> getAvailableVideoFormats() {
+		return availableVideoFormats;
+	}
 
 
-    @Override
-    public String toString() {
-        return "\n{" +
-            " url='" + getUrl() + "'\n" +
-            " title='" + getTitle() + "'\n" +
-            " rang='" + rang.get() + "'\n" +
-            " process='" + processProperty().get() + "'\n" +
-            " downloadSettings='" + getDownloadSettings() + "'" +
-            "}\n";
-    }
+	public BooleanBinding toGetBinding() {
+		return toGet;
+	}
+	
+	public Boolean isToGet() {
+		return toGet.get();
+	}
+	
+	public ObservableList<String> getAvailableAudioFormats(){
+		ObservableList<String> audioFormatList = FXCollections.observableArrayList();
+		audioFormatList.addAll("best", "aac", "flac", "mp3", "m4a", "opus", "vorbis", "wav");
+		return audioFormatList;
+	}
 
-    public static int getInstanceCount(){
-        return intanceCount;
-    }
-
-    public StringProperty rangProperty() {
-        return rang;
-    }
-
-    public BooleanProperty processProperty(){
-        return new SimpleBooleanProperty(process.get());
-    }
-
-    
-
+	@Override
+	public String toString() {
+		return "Link [url=" + url + ", \ntitle=" + title + ", \nsetting=" + setting + ", \navailableVideoFormats="
+				+ availableVideoFormats + ", \ntoGet=" + toGet + "]";
+	}
+	
+	
+	
 }
