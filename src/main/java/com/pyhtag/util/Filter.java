@@ -13,7 +13,7 @@ public class Filter {
 		linksList.stream().filter(link -> !link.isToGet()).forEach(link -> {
 			toRemove.add(link);
 		});
-		toRemove.parallelStream().forEach(link -> {
+		toRemove.stream().forEach(link -> {
 			int index = linksList.indexOf(link);
 			linksList.remove(index);
 			panes.remove(index);

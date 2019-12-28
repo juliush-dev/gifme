@@ -13,14 +13,69 @@ import java.util.regex.Pattern;
 
 import com.pyhtag.model.Link;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ReadOnlyProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 
-public class Download {
+public class Download extends Service<Boolean> {
+
+	class LinkProperty implements ReadOnlyProperty<Link> {
+
+		private Link link;
+
+		public LinkProperty(Link link) {
+			this.link = link;
+		}
+
+		@Override
+		public void addListener(ChangeListener<? super Link> listener) {
+		}
+
+		@Override
+		public void removeListener(ChangeListener<? super Link> listener) {
+
+		}
+
+		@Override
+		public Link getValue() {
+			return link;
+		}
+
+		@Override
+		public void addListener(InvalidationListener listener) {
+		}
+
+		@Override
+		public void removeListener(InvalidationListener listener) {
+		}
+
+		@Override
+		public Object getBean() {
+			return null;
+		}
+
+		@Override
+		public String getName() {
+			return link.getUrl();
+		}
+
+	}
 
 	private Path downloadPath = Paths.get(System.getProperty("user.home"), "ForYou");
 	private static DoubleProperty progress = new SimpleDoubleProperty();
-	public Download() {
+	private final LinkProperty link;
+	private BooleanProperty alreadyDownloaded = new SimpleBooleanProperty(false);
+	private static IntegerProperty status = new SimpleIntegerProperty();
+
+	public Download(Link link) {
 		try {
 			if (Files.notExists(downloadPath)) {
 				Files.createDirectory(downloadPath);
@@ -28,6 +83,7 @@ public class Download {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		this.link = new LinkProperty(link);
 	}
 
 	private List<String> prepareCommand() {
@@ -38,19 +94,9 @@ public class Download {
 		return linkListToProcessOn;
 	}
 
-	public void download(Link link) {
-		progress.set(0);
-		List<String> commandForVideo = gifmeVideo(link);
-		List<String> commandForAudio = gifmeAudio(link);
-		if (!commandForVideo.isEmpty()) {
-			start(commandForVideo);
-		}
-		if (!commandForAudio.isEmpty()) {
-			start(commandForAudio);
-		}
-	}
+	
 
-	private List<String> gifmeVideo(Link link) {
+	private List<String> videoCommand(Link link) {
 		List<String> command = prepareCommand();
 		String videoFormat = link.getSetting().getVideoId();
 		if (link.getSetting().isVideo()) {
@@ -61,7 +107,6 @@ public class Download {
 					command.add("--embed-thumbnail");
 				}
 				command.add(link.getUrl());
-				start(command);
 			} else {
 				System.err.println("No valid video format selected");
 			}
@@ -74,7 +119,7 @@ public class Download {
 
 	}
 
-	private List<String> gifmeAudio(Link link) {
+	private List<String> audioCommand(Link link) {
 		List<String> command = prepareCommand();
 		String audioFormat = link.getSetting().getAudioFormat();
 		if (link.getSetting().isAudio()) {
@@ -98,45 +143,98 @@ public class Download {
 		return command;
 	}
 
-	private void start(List<String> command) {
-		ProcessBuilder pb = new ProcessBuilder(command);
-		pb.redirectErrorStream(true);
-		Process process = null;
-		try {
-			process = pb.start();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-			Pattern pattern = Pattern.compile("(?<counter>\\d+\\.\\d+)(%)");
-
-			String line;
-			while ((line = br.readLine()) != null) {
-				Matcher matcher = pattern.matcher(line);
-				if (matcher.find()) {
-					String group = matcher.group("counter");
-					double d = Double.parseDouble(group);
-					progress.set(d/100);
-				}
-			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public final DoubleProperty progressProperty() {
-		return progress;
-	}
-
-	public final double getProgress() {
-		return progress.get();
-	}
+	
 
 	public final void setProgress(final double value) {
 		progress.set(value);
+	}
+
+	public final BooleanProperty alreadyDownloadedProperty() {
+		return this.alreadyDownloaded;
+	}
+
+	public final boolean isAlreadyDownloaded() {
+		return this.alreadyDownloadedProperty().get();
+	}
+
+	public final void setAlreadyDownloaded(final boolean alreadyDownloaded) {
+		this.alreadyDownloadedProperty().set(alreadyDownloaded);
+	}
+
+	@Override
+	protected Task<Boolean> createTask() {
+		final Link _link = getLink();
+		return new Task<Boolean>() {
+			@Override
+			protected Boolean call() throws Exception {
+				if (this.isCancelled()) {
+					System.err.println(this.getMessage());
+					return false;
+				}
+				return download(_link);
+			}
+			public boolean download(Link link) throws IOException {
+				progress.set(0);
+				List<String> commandForVideo = videoCommand(link);
+				List<String> commandForAudio = audioCommand(link);
+				boolean accomplisched = true;
+				if (!commandForVideo.isEmpty()) {
+					accomplisched = start(commandForVideo);
+				}
+				if (!commandForAudio.isEmpty()) {
+					accomplisched = start(commandForAudio);
+				}
+				return accomplisched;
+			}
+			private boolean start(List<String> command) throws IOException {
+				boolean accomplisched = false;
+				ProcessBuilder pb = new ProcessBuilder(command);
+				pb.redirectErrorStream(true);
+				Process process = null;
+				process = pb.start();
+				try (BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+					Pattern pattern = Pattern.compile("(?<counter>\\d+\\.\\d+)(%)");
+					String line;
+					while ((line = br.readLine()) != null) {
+						Matcher matcher = pattern.matcher(line);
+						System.out.println(line);
+						if (matcher.find()) {
+							String group = matcher.group("counter");
+							synchronized (this) {
+								double newValue = Double.parseDouble(group) / 100;
+								updateProgress(newValue, 1);
+							}
+						} else if (Pattern.matches("has already been downloaded", line)) {
+							alreadyDownloaded.set(true);
+						}
+					}
+					accomplisched = true;
+				}
+				return accomplisched;
+			}
+		};
+	}
+
+	public final LinkProperty linkProperty() {
+		return this.link;
+	}
+
+	public final Link getLink() {
+		return this.linkProperty().getValue();
+	}
+
+	public final IntegerProperty statusProperty() {
+		return this.status;
+	}
+	
+
+	public final int getStatus() {
+		return this.statusProperty().get();
+	}
+	
+
+	public final void setStatus(final int status) {
+		this.statusProperty().set(status);
 	}
 
 }

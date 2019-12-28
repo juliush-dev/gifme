@@ -11,7 +11,8 @@ import com.pyhtag.util.BindingInitializator.LinkAndView;
 import com.pyhtag.util.Download;
 import com.pyhtag.util.Filter;
 
-import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -92,22 +93,36 @@ public class LinkListViewController {
 	@FXML
 	private void handleProcessLinks() {
 		Filter.filter(LinkList.getLinkList(), linkListView.getPanes());
-		Download download = new Download();
-		Task<Void> t = new Task<Void>() {
-			@Override
-			protected Void call() throws Exception {
-				for (Link link : LinkList.getLinkList()) {
-					download.download(link);
-					System.out.println("Total work " + this.getTotalWork());
-				}
-				return null;
+		for (Link link : LinkList.getLinkList()) {
+			System.out.println("to download: " + link.getTitle());
+		}
+		System.out.println("*******************\n");
+		if (!LinkList.getLinkList().isEmpty()) {
+			for (Link link : LinkList.getLinkList()) {
+				Download service = new Download(link);
+				progressBar.progressProperty().bind(service.progressProperty());
+				service.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+		            @Override
+		            public void handle(WorkerStateEvent t) {
+		                System.out.println("done:" + t.getSource().getValue());
+		                int i  = service.getStatus() + 1;
+		                service.setStatus(i);
+		                if(service.getStatus() == LinkList.getLinkList().size()) {
+		                	progressLabel.setText("Done");
+		                }else {
+		                	progressLabel.setText(i + "%");
+		                }
+		            }
+		        });
+				service.start();
 			}
-		};
-		progressBar.progressProperty().bind(download.progressProperty());
-		Thread th = new Thread(t, "ferere");
-		th.start();
-		
-
+			
+		} else {
+			progressBar.progressProperty().unbind();
+			progressBar.setProgress(0);
+			System.err.println("No Link to download");
+			
+		}
 	}
 
 	public void addToLinkList(String[] urls) {
