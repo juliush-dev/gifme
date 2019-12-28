@@ -8,7 +8,7 @@ import com.pyhtag.model.Link;
 import com.pyhtag.model.LinkList;
 import com.pyhtag.util.BindingInitializator;
 import com.pyhtag.util.BindingInitializator.LinkAndView;
-import com.pyhtag.util.Downloader;
+import com.pyhtag.util.Download;
 import com.pyhtag.util.Filter;
 
 import javafx.concurrent.Task;
@@ -92,17 +92,18 @@ public class LinkListViewController {
 	@FXML
 	private void handleProcessLinks() {
 		Filter.filter(LinkList.getLinkList(), linkListView.getPanes());
-		Downloader downloader = new Downloader();
+		Download download = new Download();
 		Task<Void> t = new Task<Void>() {
 			@Override
 			protected Void call() throws Exception {
 				for (Link link : LinkList.getLinkList()) {
-					downloader.download(link);
+					download.download(link);
+					System.out.println("Total work " + this.getTotalWork());
 				}
 				return null;
 			}
 		};
-		progressBar.progressProperty().bind(downloader.progressProperty());
+		progressBar.progressProperty().bind(download.progressProperty());
 		Thread th = new Thread(t, "ferere");
 		th.start();
 		
@@ -124,7 +125,7 @@ public class LinkListViewController {
 			Link link = linkAndView.getLink();
 			LinkList.addLink(link);
 			int index = LinkList.getLinkList().indexOf(link);
-			String t = "(" + index + 1 + ") " + view.getText();
+			String t = "(" + (index + 1) + ") " + view.getText();
 			view.textProperty().unbind();
 			view.setText(t);
 			this.getLinkListView().getPanes().add(view);

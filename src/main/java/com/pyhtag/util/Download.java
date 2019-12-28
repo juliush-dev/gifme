@@ -16,25 +16,25 @@ import com.pyhtag.model.Link;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
-public class Downloader {
+public class Download {
 
-	private Path downloadTo = Paths.get(System.getProperty("user.home"), "ForYou");
+	private Path downloadPath = Paths.get(System.getProperty("user.home"), "ForYou");
 	private static DoubleProperty progress = new SimpleDoubleProperty();
-	public Downloader() {
+	public Download() {
 		try {
-			if (Files.notExists(downloadTo)) {
-				Files.createDirectory(downloadTo);
+			if (Files.notExists(downloadPath)) {
+				Files.createDirectory(downloadPath);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private List<String> initProcess() {
+	private List<String> prepareCommand() {
 		List<String> linkListToProcessOn = new ArrayList<String>();
 		linkListToProcessOn.add("youtube-dl");
 		linkListToProcessOn.add("-o");
-		linkListToProcessOn.add(downloadTo.toString() + "/%(title)s.%(ext)s");
+		linkListToProcessOn.add(downloadPath.toString() + "/%(title)s.%(ext)s");
 		return linkListToProcessOn;
 	}
 
@@ -43,15 +43,15 @@ public class Downloader {
 		List<String> commandForVideo = gifmeVideo(link);
 		List<String> commandForAudio = gifmeAudio(link);
 		if (!commandForVideo.isEmpty()) {
-			begin(commandForVideo);
+			start(commandForVideo);
 		}
 		if (!commandForAudio.isEmpty()) {
-			begin(commandForAudio);
+			start(commandForAudio);
 		}
 	}
 
 	private List<String> gifmeVideo(Link link) {
-		List<String> command = initProcess();
+		List<String> command = prepareCommand();
 		String videoFormat = link.getSetting().getVideoId();
 		if (link.getSetting().isVideo()) {
 			command.add("-f");
@@ -61,7 +61,7 @@ public class Downloader {
 					command.add("--embed-thumbnail");
 				}
 				command.add(link.getUrl());
-				begin(command);
+				start(command);
 			} else {
 				System.err.println("No valid video format selected");
 			}
@@ -75,7 +75,7 @@ public class Downloader {
 	}
 
 	private List<String> gifmeAudio(Link link) {
-		List<String> command = initProcess();
+		List<String> command = prepareCommand();
 		String audioFormat = link.getSetting().getAudioFormat();
 		if (link.getSetting().isAudio()) {
 			command.add("-x");
@@ -98,7 +98,7 @@ public class Downloader {
 		return command;
 	}
 
-	private void begin(List<String> command) {
+	private void start(List<String> command) {
 		ProcessBuilder pb = new ProcessBuilder(command);
 		pb.redirectErrorStream(true);
 		Process process = null;
