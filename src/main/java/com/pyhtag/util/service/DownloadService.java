@@ -1,4 +1,4 @@
-package com.pyhtag.util;
+package com.pyhtag.util.service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,7 +25,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 
-public class Download extends Service<Boolean> {
+public class DownloadService extends Service<Boolean> {
 
 	class LinkProperty implements ReadOnlyProperty<Link> {
 
@@ -75,7 +75,7 @@ public class Download extends Service<Boolean> {
 	private BooleanProperty alreadyDownloaded = new SimpleBooleanProperty(false);
 	private static IntegerProperty status = new SimpleIntegerProperty();
 
-	public Download(Link link) {
+	public DownloadService(Link link) {
 		try {
 			if (Files.notExists(downloadPath)) {
 				Files.createDirectory(downloadPath);
@@ -224,7 +224,7 @@ public class Download extends Service<Boolean> {
 	}
 
 	public final IntegerProperty statusProperty() {
-		return this.status;
+		return DownloadService.status;
 	}
 	
 

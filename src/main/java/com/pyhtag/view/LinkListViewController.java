@@ -1,15 +1,12 @@
 package com.pyhtag.view;
 
 import java.io.IOException;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 import com.pyhtag.model.Link;
 import com.pyhtag.model.LinkList;
-import com.pyhtag.util.BindingInitializator;
-import com.pyhtag.util.BindingInitializator.LinkAndView;
-import com.pyhtag.util.Download;
 import com.pyhtag.util.Filter;
+import com.pyhtag.util.service.AddLinkService;
+import com.pyhtag.util.service.DownloadService;
 
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
@@ -99,54 +96,43 @@ public class LinkListViewController {
 		System.out.println("*******************\n");
 		if (!LinkList.getLinkList().isEmpty()) {
 			for (Link link : LinkList.getLinkList()) {
-				Download service = new Download(link);
-				progressBar.progressProperty().bind(service.progressProperty());
-				service.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-		            @Override
-		            public void handle(WorkerStateEvent t) {
-		                System.out.println("done:" + t.getSource().getValue());
-		                int i  = service.getStatus() + 1;
-		                service.setStatus(i);
-		                if(service.getStatus() == LinkList.getLinkList().size()) {
-		                	progressLabel.setText("Done");
-		                }else {
-		                	progressLabel.setText(i + "%");
-		                }
-		            }
-		        });
-				service.start();
+				DownloadService downloadService = new DownloadService(link);
+				progressBar.progressProperty().bind(downloadService.progressProperty());
+				downloadService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+					@Override
+					public void handle(WorkerStateEvent t) {
+						System.out.println("done:" + t.getSource().getValue());
+						int i = downloadService.getStatus() + 1;
+						downloadService.setStatus(i);
+						if (downloadService.getStatus() == LinkList.getLinkList().size()) {
+							progressLabel.setText("Done");
+						} else {
+							progressLabel.setText(i + "%");
+						}
+					}
+				});
+				downloadService.start();
 			}
-			
+
 		} else {
 			progressBar.progressProperty().unbind();
 			progressBar.setProgress(0);
 			System.err.println("No Link to download");
-			
+
 		}
 	}
 
 	public void addToLinkList(String[] urls) {
-		BindingInitializator bindingInit = new BindingInitializator();
-		for (CompletableFuture<LinkAndView> future : bindingInit.process(urls)) {
-			addTask(future);
-		}
-	}
-
-	private void addTask(CompletableFuture<LinkAndView> future) {
-		LinkAndView linkAndView;
-		try {
-			linkAndView = future.get();
-			TitledPane view = linkAndView.getPane();
-			Link link = linkAndView.getLink();
-			LinkList.addLink(link);
-			int index = LinkList.getLinkList().indexOf(link);
-			String t = "(" + (index + 1) + ") " + view.getText();
-			view.textProperty().unbind();
-			view.setText(t);
-			this.getLinkListView().getPanes().add(view);
-		} catch (InterruptedException | ExecutionException e) {
-			e.printStackTrace();
-		}
+		AddLinkService addLinkService = new AddLinkService(urls);
+		addLinkService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+			@Override
+			public void handle(WorkerStateEvent event) {
+				for (TitledPane t : addLinkService.getValue()) {
+					linkListView.getPanes().add(t);
+				}
+			}
+		});
+		addLinkService.start();
 	}
 
 	public BorderPane getRoot() {

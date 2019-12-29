@@ -37,8 +37,8 @@ public class BindingInitializator {
 		urlsList.parallelStream().forEach(url -> {
 			Link link = new Link(url);
 			CompletableFuture<Link> moreInfo = CompletableFuture.supplyAsync(new LinkOnlineInformation(link));
-			CompletableFuture<LinkAndView> setBinding = moreInfo.thenApply(new LinkAndViewFactory());
-			list.add(setBinding);
+			CompletableFuture<LinkAndView> linkAndView = moreInfo.thenApply(new LinkAndViewFactory());
+			list.add(linkAndView);
 		});
 		return list;
 	}
