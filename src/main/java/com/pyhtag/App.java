@@ -26,7 +26,7 @@ public class App extends Application {
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Get it for me");
-        this.primaryStage.setResizable(false);
+//        this.primaryStage.setResizable(false);
         Runtime r = Runtime.getRuntime();
         try {
             String s;
@@ -46,7 +46,7 @@ public class App extends Application {
         try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(App.class.getResource("view/RootView.fxml"));
+            loader.setLocation(App.class.getResource("view/RrootView.fxml"));
             rootLayout = (BorderPane) loader.load();
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);

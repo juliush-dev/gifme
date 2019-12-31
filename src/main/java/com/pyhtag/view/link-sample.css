@@ -1,0 +1,122 @@
+
+
+* {
+   -fx-main-color: #46424C;
+   -fx-second-color: #FFFF99;
+   -fx-default-transparent: transparent;
+   -fx-default-text-color: white;
+}
+.con.titled-pane > .title > .arrow-button .arrow {
+     -fx-background-color: -fx-second-color;
+}
+.con.titled-pane > .title {
+/*     -fx-alignment: center; */
+    -fx-background-color: -fx-main-color;
+    -fx-background-radius: 0;
+    -fx-padding: 0em 0em 0em 0.8em;
+    -fx-effect: dropshadow( gaussian, #292929, 10, 0.12, 0, 0);
+}
+.con.titled-pane > .title:hover .title-content {
+    -fx-opacity: 1;
+}
+
+
+.title-content {
+     -fx-opacity: 0.1;
+    -fx-alignment: center-right;
+}
+
+.badge{
+    -fx-font-size: 1.0em;
+    -fx-background-color: -fx-default-transparent;
+    -fx-border-color: -fx-second-color;
+    -fx-border-radius: 100%;
+    -fx-label-padding: 0em 0em 0.003em 0em;
+    -fx-text-fill: -fx-second-color;
+    -fx-alignment: center;
+}
+
+.title-content-label {
+    -fx-text-fill: white;
+    -fx-alignment: center;
+    -fx-label-padding: 0em 0em 0em 0em;
+    -fx-font-size: 1.0em;
+}
+
+.con.titled-pane:expanded .title-content-label {
+    -fx-text-fill: -fx-second-color;
+    -fx-alignment: center;
+    -fx-label-padding: 0em 0em 0em 0em;
+    -fx-font-size: 1.0em;
+}
+
+
+
+.jfx-button.title-content-edit-button {
+    -fx-background-color: -fx-default-transparent;
+    -fx-content-display: graphic-only;
+/*     -fx-graphic: url("icon/edit.png"); */
+    -fx-graphic-text-gap: 1em;
+    -fx-label-padding: 0em;
+    
+}
+.jfx-button.title-content-delete-button {
+    -jfx-button-type: RAISED;
+    -fx-background-color: -fx-default-transparent;
+    -fx-content-display: graphic-only;
+/*     -fx-graphic: url("icon/deleteThis.png"); */
+    -fx-label-padding: 0em;
+}
+
+
+
+.titled-pane > *.content {
+    -fx-background-color: -fx-main-color;
+    -fx-background-radius: 0em;
+    -fx-border-width: 0em;
+}
+
+/* titledPane content */
+.content-frame {
+    -fx-background-color: -fx-default-transparent;
+    -fx-border-width: 0.1em;
+    -fx-border-color: -fx-second-color;
+    -fx-border-radius: 0.6em;
+}
+.jfx-tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: -fx-main-color;
+    -fx-background-radius: 0.6em 0.6em 0 0;
+   
+}
+
+.jfx-tab-pane .tab .tab-label {
+    -fx-background-color: transparent;    
+    -fx-alignment: CENTER;
+    -fx-font-size: 1.0em;
+}
+.jfx-tab-pane .tab-header-area .jfx-rippler{
+    -jfx-rippler-fill: -fx-second-color;
+}
+*.text{
+    -fx-text-fill: -fx-second-color;
+    -fx-font-family: 'FiraCode Nerd Font';
+    -fx-font-style: normal;
+}
+
+*.tab-label{
+    -fx-text-fill: -fx-second-color;
+    -fx-font-style: normal;
+}
+
+/* Setting section */
+.jfx-toggle-button {
+    -fx-text-fill: -fx-second-color;
+}
+
+.jfx-toggle-button {
+    -fx-text-fill: -fx-second-color;
+}
+
+.jfx-toggle-button .arrow{
+    visibility: hidden;
+}

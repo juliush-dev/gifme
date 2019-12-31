@@ -19,56 +19,53 @@ public class LinkAndViewFactory implements Function<Link, LinkAndView> {
 
 	@Override
 	public LinkAndView apply(Link link) {
-		TitledPane linkView = createViewOf(link);
-		return new LinkAndView(link, linkView);
+		MapControllerView mapControllerView = createViewOf(link);
+		LinkAndView linkView = new LinkAndView(link, mapControllerView.getView());
+		linkView.setViewController(mapControllerView.getController());
+		return linkView;
 	}
-
-	private TitledPane createViewOf(Link link) {
-		TitledPane linkView = null;
+	class MapControllerView{
+		TitledPane view;
+		LinkSampleViewController controller;
+		public MapControllerView(TitledPane view, LinkSampleViewController controller) {
+			this.view = view;
+			this.controller = controller;
+		}
+		public TitledPane getView() {
+			return view;
+		}
+		public LinkSampleViewController getController() {
+			return controller;
+		}
+		
+	}
+	private MapControllerView createViewOf(Link link) {
+		TitledPane viewSample = null;
+		MapControllerView mapControllerView = null;
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("../view/LinkSampleView.fxml"));
-			linkView = loader.load();
-			initializeBinding(link, loader.getController());
+			loader.setLocation(LinkSampleViewController.class.getResource("RlinkSampleView.fxml"));
+			viewSample = loader.load();
+			LinkSampleViewController viewSampleController = loader.getController();
+			initializeBinding(link, viewSampleController);
+			mapControllerView = new MapControllerView(viewSample, viewSampleController);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return linkView;
+		return mapControllerView;
 	}
 	
 	private void initializeBinding(Link link, LinkSampleViewController controller) throws IOException {
-		controller.getUrl().textProperty().bind(link.titleProperty());
-		controller.getVideo().setAllowIndeterminate(false);
-		controller.getAudio().setAllowIndeterminate(false);
-		controller.getVideoSettingView().setDisable(true);
-		controller.getAudioSettingView().setDisable(true);
-		controller.getVideoThumbnail().disableProperty().bind((controller.getVideoSettingView().disableProperty()));
-		controller.getAudioThumbnail().disableProperty().bind((controller.getAudioSettingView().disableProperty()));
+		controller.getTitle().textProperty().bind(link.titleProperty());
 		link.getSetting().audioThumbnailProperty().bind(controller.getAudioThumbnail().selectedProperty());
 		link.getSetting().videoThumbnailProperty().bind(controller.getVideoThumbnail().selectedProperty());
-		controller.getVideoSettingView().disableProperty().addListener((observableValue, oldValue, newValue) -> {
-			if (newValue) {
-				controller.getVideoThumbnail().setSelected(false);
-			}
-		});
-		controller.getAudioSettingView().disableProperty().addListener((observableValue, oldValue, newValue) -> {
-			if (newValue) {
-				controller.getAudioThumbnail().setSelected(false);
-			}
-		});
 		StringProperty videoFormat = new SimpleStringProperty();
-		controller.getVideo().selectedProperty().addListener((observableValue, oldValue, newValue) -> {
-			controller.getVideoSettingView().setDisable(!newValue.booleanValue());
-
-		});
-		controller.getAudio().selectedProperty().addListener((observableValue, oldValue, newValue) -> {
-			controller.getAudioSettingView().setDisable(!newValue.booleanValue());
-		});
-		controller.getVideoIdSelection().setItems(link.getAvailableVideoFormats());
-		controller.getAudioFormatSelection().getItems().addAll(link.getAvailableAudioFormats());
+		controller.getVideoComboSelection().setItems(link.getAvailableVideoFormats());
+		controller.getAudioComboSelection().getItems().addAll(link.getAvailableAudioFormats());
+		
 		link.getSetting().videoProperty().bind(controller.getVideo().selectedProperty());
 		link.getSetting().audioProperty().bind(controller.getAudio().selectedProperty());
-		controller.getVideoIdSelection().getSelectionModel().selectedItemProperty()
+		controller.getVideoComboSelection().getSelectionModel().selectedItemProperty()
 				.addListener((observableValue, oldValue, newValue) -> {
 					Pattern pattern = Pattern.compile("^\\d+");
 					Matcher matcher = pattern.matcher(newValue);
@@ -88,7 +85,7 @@ public class LinkAndViewFactory implements Function<Link, LinkAndView> {
 						}
 					}
 				});
-		controller.getAudioFormatSelection().getSelectionModel().selectedItemProperty()
+		controller.getAudioComboSelection().getSelectionModel().selectedItemProperty()
 				.addListener((observableValue, oldValue, newValue) -> {
 					link.getSetting().setAudioFormat(newValue);
 					if (!"mp3".equals(newValue)) {

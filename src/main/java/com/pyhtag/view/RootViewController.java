@@ -7,7 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.BorderPane;
 
-public class RootViewController{
+public class RootViewController {
 	@FXML
 	private BorderPane root;
 	@FXML
@@ -29,7 +29,7 @@ public class RootViewController{
 
 	public static RootViewController getInstance() throws IOException {
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(RootViewController.class.getResource("view/RootView.fxml"));
+		loader.setLocation(RootViewController.class.getResource("view/RrootView.fxml"));
 		TitledPane root = loader.load();
 		return loader.getController();
 	}

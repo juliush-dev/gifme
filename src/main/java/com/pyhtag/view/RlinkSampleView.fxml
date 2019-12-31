@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXToggleButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<TitledPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" styleClass="con" stylesheets="@link-sample.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pyhtag.view.LinkSampleViewController">
+  <content>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="333.0" prefWidth="600.0">
+         <children>
+            <JFXTabPane prefHeight="349.0" prefWidth="598.0" styleClass="content-frame" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <tabs>
+                  <Tab text="Video">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox layoutY="31.0" prefHeight="267.0" prefWidth="576.0" spacing="20.0" AnchorPane.bottomAnchor="31.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="31.0">
+                                 <children>
+                                    <JFXToggleButton fx:id="video" text="Get video" textFill="#ffff99" />
+                                    <JFXToggleButton fx:id="videoThumbnail" text="Embed thumbnail" textFill="#ffff99">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </JFXToggleButton>
+                                    <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                       <children>
+                                          <JFXComboBox fx:id="videoComboSelection" focusColor="#ffff99" labelFloat="true" layoutX="14.0" layoutY="1.0" prefHeight="26.0" prefWidth="261.0" promptText="Select video format" unFocusColor="#ffff99" />
+                                       </children>
+                                    </AnchorPane>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+                  <Tab text="Audio">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox layoutY="31.0" prefHeight="267.0" prefWidth="576.0" spacing="20.0" AnchorPane.bottomAnchor="31.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="31.0">
+                                 <children>
+                                    <JFXToggleButton fx:id="audio" text="Get audio" textFill="#ffff99" />
+                                    <JFXToggleButton fx:id="audioThumbnail" text="Embed thumbnail" textFill="#ffff99">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </JFXToggleButton>
+                                    <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                       <children>
+                                          <JFXComboBox fx:id="audioComboSelection" focusColor="#ffff99" labelFloat="true" layoutX="14.0" layoutY="1.0" prefHeight="26.0" prefWidth="261.0" promptText="Select audio format" unFocusColor="#ffff99" />
+                                       </children>
+                                    </AnchorPane>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+               </tabs>
+            </JFXTabPane>
+         </children></AnchorPane>
+  </content>
+   <graphic>
+      <AnchorPane prefHeight="30.0" prefWidth="572.0">
+         <children>
+            <HBox layoutX="502.0" layoutY="8.0" prefHeight="26.0" prefWidth="70.0" spacing="3.0" styleClass="title-content" AnchorPane.bottomAnchor="11.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="9.0">
+               <children>
+                  <JFXButton fx:id="edit" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" prefHeight="15.0" prefWidth="15.0" styleClass="title-content-edit-button">
+                     <graphic>
+                        <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@icon/edit.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></JFXButton>
+                  <JFXButton fx:id="delete" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" styleClass="title-content-delete-button">
+                     <graphic>
+                        <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@icon/deleteThis.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></JFXButton>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" layoutX="-1.0" prefHeight="47.0" prefWidth="447.0" spacing="5.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="126.0" AnchorPane.topAnchor="14.0">
+               <children>
+                  <Label fx:id="title" styleClass="title-content-label" text="Label" />
+               </children>
+               <opaqueInsets>
+                  <Insets left="100.0" />
+               </opaqueInsets>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" layoutX="456.0" layoutY="8.0" prefHeight="20.0" prefWidth="20.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="86.0" AnchorPane.topAnchor="8.0">
+               <children>
+                  <Label fx:id="badgeContent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" styleClass="badge" text="9" />
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+   </graphic>
+</TitledPane>

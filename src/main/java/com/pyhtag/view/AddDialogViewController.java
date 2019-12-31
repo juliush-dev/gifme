@@ -1,5 +1,6 @@
 package com.pyhtag.view;
 
+import com.jfoenix.controls.JFXButton;
 import com.pyhtag.util.InvalidInput;
 import com.pyhtag.util.ValidInputList;
 
@@ -16,7 +17,7 @@ public class AddDialogViewController {
 	@FXML
 	private TextArea textArea;
 	@FXML
-	private Button done;
+	private JFXButton done;
 	private LinkListViewController linkListViewController;
 
 	public TextArea getRoot() {

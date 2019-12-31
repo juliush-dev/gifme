@@ -50,8 +50,9 @@ public class AddLinkService extends Service<ObservableList<TitledPane>> {
 			Link link = linkAndView.getLink();
 			LinkList.addLink(link);
 			int index = LinkList.getLinkList().indexOf(link);
-			String t = "(" + (index + 1) + ") " + view.getText();
+			String t = view.getText();
 			view.textProperty().unbind();
+			linkAndView.getViewController().getBadgeContent().setText(String.valueOf(index + 1));
 			view.setText(t);
 			panes.add(view);
 		} catch (InterruptedException | ExecutionException e) {

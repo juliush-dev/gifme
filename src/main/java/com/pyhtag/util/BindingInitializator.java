@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import com.pyhtag.model.Link;
+import com.pyhtag.view.LinkSampleViewController;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableSet;
@@ -15,6 +16,7 @@ public class BindingInitializator {
 	public static class LinkAndView {
 		private Link link;
 		private TitledPane linkView;
+		private LinkSampleViewController viewController;
 
 		public LinkAndView(Link link, TitledPane linkView) {
 			this.link = link;
@@ -27,6 +29,13 @@ public class BindingInitializator {
 
 		public Link getLink() {
 			return link;
+		}
+
+		public void setViewController(LinkSampleViewController controller) {
+			this.viewController = controller;
+		}
+		public LinkSampleViewController getViewController() {
+			return viewController;
 		}
 
 	}

@@ -2,21 +2,23 @@ package com.pyhtag.view;
 
 import java.io.IOException;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXProgressBar;
 import com.pyhtag.model.Link;
 import com.pyhtag.model.LinkList;
+import com.pyhtag.util.BindingInitializator.LinkAndView;
 import com.pyhtag.util.Filter;
 import com.pyhtag.util.service.AddLinkService;
 import com.pyhtag.util.service.DownloadService;
 
+import javafx.collections.ObservableList;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -34,15 +36,18 @@ public class LinkListViewController {
 	@FXML
 	private Accordion linkListView;
 	@FXML
-	private Button add;
+	private JFXButton add;
 	@FXML
-	private Button delete;
+	private JFXButton delete;
 	@FXML
-	private Button process;
+	private JFXButton process;
 	@FXML
-	private ProgressBar progressBar;
+	private JFXProgressBar progressBar;
 	@FXML
 	private Label progressLabel;
+	@FXML
+	private Label badge;
+
 	private AddDialogViewController addDialogViewController;
 
 	public Accordion getLinkListView() {
@@ -127,6 +132,7 @@ public class LinkListViewController {
 		addLinkService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 			@Override
 			public void handle(WorkerStateEvent event) {
+//				ObservableList<LinkAndView> linkAndViewList = addLinkService.getValue();
 				for (TitledPane t : addLinkService.getValue()) {
 					linkListView.getPanes().add(t);
 				}
@@ -143,27 +149,27 @@ public class LinkListViewController {
 		this.root = root;
 	}
 
-	public Button getAdd() {
+	public JFXButton getAdd() {
 		return add;
 	}
 
-	public void setAdd(Button add) {
+	public void setAdd(JFXButton add) {
 		this.add = add;
 	}
 
-	public Button getDelete() {
+	public JFXButton getDelete() {
 		return delete;
 	}
 
-	public void setDelete(Button delete) {
+	public void setDelete(JFXButton delete) {
 		this.delete = delete;
 	}
 
-	public Button getProcess() {
+	public JFXButton getProcess() {
 		return process;
 	}
 
-	public void setProcess(Button process) {
+	public void setProcess(JFXButton process) {
 		this.process = process;
 	}
 
