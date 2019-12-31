@@ -5,18 +5,22 @@
    -fx-second-color: #FFFF99;
    -fx-default-transparent: transparent;
    -fx-default-text-color: white;
+   -fx-custom-border-color: #99FF99;
 }
-.con.titled-pane > .title > .arrow-button .arrow {
+/*************************/
+/*titled-pane title config*/
+/************************/
+.titled-pane > .title > .arrow-button .arrow {
      -fx-background-color: -fx-second-color;
 }
-.con.titled-pane > .title {
+.titled-pane > .title {
 /*     -fx-alignment: center; */
     -fx-background-color: -fx-main-color;
     -fx-background-radius: 0;
     -fx-padding: 0em 0em 0em 0.8em;
     -fx-effect: dropshadow( gaussian, #292929, 10, 0.12, 0, 0);
 }
-.con.titled-pane > .title:hover .title-content {
+.titled-pane > .title:hover .title-content {
     -fx-opacity: 1;
 }
 
@@ -35,40 +39,84 @@
     -fx-text-fill: -fx-second-color;
     -fx-alignment: center;
 }
+/**********END titled-pane title config*************/
+/*********************************/
 
-.title-content-label {
+
+/*************************/
+/*Titled-Pane TextField Edition*/
+/************************/
+/*Default config*/
+.text-field:readonly {
     -fx-text-fill: white;
-    -fx-alignment: center;
+    -fx-alignment: center-left;
     -fx-label-padding: 0em 0em 0em 0em;
     -fx-font-size: 1.0em;
+    -fx-background-color: -fx-default-transparent;
+}
+.text-field:editable {
+    -fx-text-fill: white;
+    -fx-alignment: center-left;
+    -fx-label-padding: 0em 0em 0em 0em;
+    -fx-font-size: 1.0em;
+    -fx-border-color: -fx-second-color;
+    -fx-background-color: -fx-default-transparent;
 }
 
-.con.titled-pane:expanded .title-content-label {
+.text-field:editable .text-field:focused {
+    -fx-border-color: -fx-custom-border-color;
+}
+
+.titled-pane:expanded .text-field:readonly{
     -fx-text-fill: -fx-second-color;
-    -fx-alignment: center;
-    -fx-label-padding: 0em 0em 0em 0em;
-    -fx-font-size: 1.0em;
+    -fx-border-color: -fx-second-color;
+    -fx-border-radius: 6px;
 }
+/**********END Titled-Pane TextField Edition*************/
+/*********************************/
 
 
-
+/*************************/
+/*Edit button action*/
+/************************/
 .jfx-button.title-content-edit-button {
     -fx-background-color: -fx-default-transparent;
     -fx-content-display: graphic-only;
-/*     -fx-graphic: url("icon/edit.png"); */
     -fx-graphic-text-gap: 1em;
     -fx-label-padding: 0em;
-    
 }
+/*Defaul image view content*/
+.image-view-edit-disable{
+    -fx-image: url("icon/edit.png");
+}
+/*1) when pressed*/
+/*change the image-view content*/
+.image-view-edit-pressed{
+    -fx-image: url("icon/submit.png");
+}
+/**********END Edit button action*************/
+/*********************************/
+
+/***************************/
+/*Delete button action*/
+/****************************/
 .jfx-button.title-content-delete-button {
     -jfx-button-type: RAISED;
     -fx-background-color: -fx-default-transparent;
     -fx-content-display: graphic-only;
-/*     -fx-graphic: url("icon/deleteThis.png"); */
     -fx-label-padding: 0em;
 }
-
-
+/*Default image view content */
+.image-view-delete{
+    -fx-image: url("icon/deleteThis.png");
+}
+/*1) when hover*/
+/*.titled-pane .title with borde-color red*/
+.image-view-delete-pressed {
+    -fx-border-color: #FF9999;
+}
+/**********END Delete button action*************/
+/***********************************/
 
 .titled-pane > *.content {
     -fx-background-color: -fx-main-color;
@@ -76,7 +124,9 @@
     -fx-border-width: 0em;
 }
 
-/* titledPane content */
+/*************************/
+/*titled-pane contenf config*/
+/************************/
 .content-frame {
     -fx-background-color: -fx-default-transparent;
     -fx-border-width: 0.1em;
@@ -120,3 +170,32 @@
 .jfx-toggle-button .arrow{
     visibility: hidden;
 }
+/**********END titled-pane contenf config*************/
+/*********************************/
+
+/* titledPane content */
+
+/*************************/
+/*Titled-pane jfx-combox config*/
+/************************/
+.jfx-combo-box{
+    -fx-prompt-text-fill: -fx-second-color;
+    -fx-text-fill: -fx-second-color;
+}
+.jfx-combo-box > .text {
+    -fx-fill: -fx-second-color;
+}
+.jfx-combo-box > .input-line{
+    -fx-background-color: -fx-second-color;
+    -fx-border-color: -fx-second-color;
+    -fx-border-width: 1em;
+}
+
+.jfx-combo-box > .arrow-button > .arrow{
+    -fx-background-color: -fx-second-color;
+    -fx-border-color: -fx-second-color;
+    -fx-border-width: 3em;
+}
+/**********END Titled-pane jfx-combox config*************/
+/*********************************/
+

@@ -7,15 +7,15 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<TitledPane fx:id="titledPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" styleClass="con" stylesheets="@link-sample.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pyhtag.view.LinkSampleViewController">
+<TitledPane fx:id="titledPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" stylesheets="@link-sample.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pyhtag.view.LinkSampleViewController">
   <content>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="333.0" prefWidth="600.0">
          <children>
@@ -58,7 +58,7 @@
                                     </JFXToggleButton>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                        <children>
-                                          <JFXComboBox fx:id="audioComboSelection" focusColor="#ffff99" labelFloat="true" layoutX="14.0" layoutY="1.0" prefHeight="26.0" prefWidth="261.0" promptText="Select audio format" unFocusColor="#ffff99" />
+                                          <JFXComboBox fx:id="audioComboSelection" focusColor="#ffff99" labelFloat="true" layoutX="14.0" layoutY="1.0" prefHeight="26.0" prefWidth="261.0" promptText="Select audio format" styleClass="jfx-combo-box" unFocusColor="#ffff99" />
                                        </children>
                                     </AnchorPane>
                                  </children>
@@ -78,25 +78,17 @@
                <children>
                   <JFXButton fx:id="edit" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" onAction="#handleEdit" prefHeight="15.0" prefWidth="15.0" styleClass="title-content-edit-button">
                      <graphic>
-                        <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@icon/edit.png" />
-                           </image>
-                        </ImageView>
+                        <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" styleClass="image-view-edit-disable" />
                      </graphic></JFXButton>
                   <JFXButton fx:id="delete" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" onAction="#handleDelete" styleClass="title-content-delete-button">
                      <graphic>
-                        <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@icon/deleteThis.png" />
-                           </image>
-                        </ImageView>
+                        <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" styleClass="image-view-delete" />
                      </graphic></JFXButton>
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" layoutX="-1.0" prefHeight="47.0" prefWidth="447.0" spacing="5.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="126.0" AnchorPane.topAnchor="14.0">
                <children>
-                  <Label fx:id="title" styleClass="title-content-label" text="Label" />
+                  <TextField fx:id="title" editable="false" prefHeight="26.0" prefWidth="446.0" promptText="Title" text="The title of this link" />
                </children>
                <opaqueInsets>
                   <Insets left="100.0" />

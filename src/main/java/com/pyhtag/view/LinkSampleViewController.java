@@ -9,6 +9,7 @@ import com.pyhtag.util.BindingInitializator.LinkAndView;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 
 /**
@@ -26,7 +27,7 @@ public class LinkSampleViewController {
 	 * control fields;
 	 */
 	@FXML
-	private Label title;
+	private TextField title;
 	
 	@FXML
 	private Label badgeContent;
@@ -79,11 +80,11 @@ public class LinkSampleViewController {
 		this.titledPane = titledPane;
 	}
 
-	public Label getTitle() {
+	public TextField getTitle() {
 		return title;
 	}
 
-	public void setTitle(Label title) {
+	public void setTitle(TextField title) {
 		this.title = title;
 	}
 
