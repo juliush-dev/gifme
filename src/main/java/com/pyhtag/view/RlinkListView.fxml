@@ -72,7 +72,7 @@
    <center>
       <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <content>
-            <Accordion fx:id="linkListView" prefWidth="600.0" />
+            <Accordion fx:id="uiView" prefWidth="600.0" />
          </content>
       </ScrollPane>
    </center>

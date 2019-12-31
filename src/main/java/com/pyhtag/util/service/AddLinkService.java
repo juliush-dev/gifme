@@ -1,20 +1,18 @@
 package com.pyhtag.util.service;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-import com.pyhtag.model.Link;
-import com.pyhtag.model.LinkList;
+import com.pyhtag.model.LinkAndViewList;
 import com.pyhtag.util.BindingInitializator;
 import com.pyhtag.util.BindingInitializator.LinkAndView;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.scene.control.TitledPane;
 
-public class AddLinkService extends Service<ObservableList<TitledPane>> {
+public class AddLinkService extends Service<Void> {
 
 	BindingInitializator b = new BindingInitializator();
 	String[] urls;
@@ -23,38 +21,33 @@ public class AddLinkService extends Service<ObservableList<TitledPane>> {
 		this.urls = urls;
 	}
 
-	ObservableList<TitledPane> panes = FXCollections.observableArrayList();
-
 	@Override
-	protected Task<ObservableList<TitledPane>> createTask() {
-		return new Task<ObservableList<TitledPane>>() {
+	protected Task<Void> createTask() {
+		return new Task<Void>() {
 			@Override
-			protected ObservableList<TitledPane> call() throws Exception {
-				for (CompletableFuture<LinkAndView> future : b.process(urls)) {
-					getLinkFrom(future, panes);
+			protected Void call() throws Exception {
+				List<CompletableFuture<LinkAndView>> futures = b.process(urls);
+				for (CompletableFuture<LinkAndView> future : futures) {
+					getFrom(future);
 				}
-				return panes;
+				return null;
 			}
 		};
 	}
 
-	public ObservableList<TitledPane> getPanes() {
-		return panes;
-	}
-
-	private void getLinkFrom(CompletableFuture<LinkAndView> future, ObservableList<TitledPane> panes) {
+	private void getFrom(CompletableFuture<LinkAndView> future) {
 		LinkAndView linkAndView;
 		try {
 			linkAndView = future.get();
+			System.out.println("Added " + linkAndView);
 			TitledPane view = linkAndView.getPane();
-			Link link = linkAndView.getLink();
-			LinkList.addLink(link);
-			int index = LinkList.getLinkList().indexOf(link);
+			linkAndView.getViewController().setLink(linkAndView.getLink());
+			LinkAndViewList.add(linkAndView);
+			int index = LinkAndViewList.get().indexOf(linkAndView);
 			String t = view.getText();
 			view.textProperty().unbind();
 			linkAndView.getViewController().getBadgeContent().setText(String.valueOf(index + 1));
 			view.setText(t);
-			panes.add(view);
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}

@@ -3,11 +3,13 @@ package com.pyhtag.view;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXToggleButton;
+import com.pyhtag.model.Link;
+import com.pyhtag.model.LinkAndViewList;
+import com.pyhtag.util.BindingInitializator.LinkAndView;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
-import javafx.scene.layout.StackPane;
 
 /**
  * LinkSampleViewController
@@ -25,8 +27,7 @@ public class LinkSampleViewController {
 	 */
 	@FXML
 	private Label title;
-	@FXML
-	private StackPane badge;
+	
 	@FXML
 	private Label badgeContent;
 	@FXML
@@ -52,25 +53,22 @@ public class LinkSampleViewController {
 	private JFXToggleButton audioThumbnail;
 	@FXML
 	private JFXComboBox<String> audioComboSelection;
-
-	/**
-	 * Constructor to get the controller;
-	 */
-	public LinkSampleViewController() {
-//    	FXMLLoader loader = new FXMLLoader();
-//		loader.setLocation(LinkSampleViewController.class.getResource("RlinkSampleView.fxml"));
-//		try {
-//			TitledPane root = loader.load();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		loader.setController(this);
-	}
+	
+	private LinkAndView linkAndView = new LinkAndView(null, titledPane);
 
 	@FXML
 	private void initialize() {
-
+		linkAndView.setViewController(this);
+	}
+	
+	@FXML
+	private void handleEdit() {
+		
+	}
+	
+	@FXML
+	private void handleDelete() {
+		LinkAndViewList.delete(this);
 	}
 
 	public TitledPane getTitledPane() {
@@ -87,14 +85,6 @@ public class LinkSampleViewController {
 
 	public void setTitle(Label title) {
 		this.title = title;
-	}
-
-	public StackPane getBadge() {
-		return badge;
-	}
-
-	public void setBadge(StackPane badge) {
-		this.badge = badge;
 	}
 
 	public Label getBadgeContent() {
@@ -167,6 +157,13 @@ public class LinkSampleViewController {
 
 	public void setAudioComboSelection(JFXComboBox<String> audioIdSelection) {
 		this.audioComboSelection = audioIdSelection;
+	}
+
+	public void setLink(Link link) {
+		linkAndView.setLink(link);
+	}
+	public LinkAndView link() {
+		return linkAndView;
 	}
 
 }

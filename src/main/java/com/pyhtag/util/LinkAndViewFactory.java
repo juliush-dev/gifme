@@ -22,47 +22,58 @@ public class LinkAndViewFactory implements Function<Link, LinkAndView> {
 		MapControllerView mapControllerView = createViewOf(link);
 		LinkAndView linkView = new LinkAndView(link, mapControllerView.getView());
 		linkView.setViewController(mapControllerView.getController());
+		System.out.println("Out of factoring: "  + linkView.getLink().getTitle());
+		System.out.println("Out of factoring: "  + linkView.getPane().getText());
+		System.out.println("Out of factoring: "  + linkView.getPane().getStyleClass());
 		return linkView;
 	}
-	class MapControllerView{
+
+	class MapControllerView {
 		TitledPane view;
 		LinkSampleViewController controller;
+
 		public MapControllerView(TitledPane view, LinkSampleViewController controller) {
 			this.view = view;
 			this.controller = controller;
 		}
+
 		public TitledPane getView() {
 			return view;
 		}
+
 		public LinkSampleViewController getController() {
 			return controller;
 		}
-		
+
 	}
+
 	private MapControllerView createViewOf(Link link) {
 		TitledPane viewSample = null;
 		MapControllerView mapControllerView = null;
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(LinkSampleViewController.class.getResource("RlinkSampleView.fxml"));
+			loader.setLocation(getClass().getResource("../view/RlinkSampleView.fxml"));
 			viewSample = loader.load();
+			System.out.println(viewSample.getStyleClass());
 			LinkSampleViewController viewSampleController = loader.getController();
 			initializeBinding(link, viewSampleController);
+			System.out.println("After binding: " + viewSample.getText());
 			mapControllerView = new MapControllerView(viewSample, viewSampleController);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return mapControllerView;
 	}
-	
+
 	private void initializeBinding(Link link, LinkSampleViewController controller) throws IOException {
 		controller.getTitle().textProperty().bind(link.titleProperty());
+		System.out.println("Title in the controller" + controller.getTitle().getText());
 		link.getSetting().audioThumbnailProperty().bind(controller.getAudioThumbnail().selectedProperty());
 		link.getSetting().videoThumbnailProperty().bind(controller.getVideoThumbnail().selectedProperty());
 		StringProperty videoFormat = new SimpleStringProperty();
 		controller.getVideoComboSelection().setItems(link.getAvailableVideoFormats());
 		controller.getAudioComboSelection().getItems().addAll(link.getAvailableAudioFormats());
-		
+
 		link.getSetting().videoProperty().bind(controller.getVideo().selectedProperty());
 		link.getSetting().audioProperty().bind(controller.getAudio().selectedProperty());
 		controller.getVideoComboSelection().getSelectionModel().selectedItemProperty()
@@ -94,6 +105,7 @@ public class LinkAndViewFactory implements Function<Link, LinkAndView> {
 						}
 					}
 				});
+		System.out.println("Binding done");
 	}
 
 }

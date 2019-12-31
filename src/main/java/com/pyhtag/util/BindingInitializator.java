@@ -38,6 +38,16 @@ public class BindingInitializator {
 			return viewController;
 		}
 
+		@Override
+		public String toString() {
+			return "LinkAndView [link=" + link.getTitle() + ", linkView=" + linkView.getText() + "]";
+		}
+
+		public void setLink(Link link) {
+			this.link = link;
+		}
+		
+
 	}
 
 	public List<CompletableFuture<LinkAndView>> process(String[] urls) {

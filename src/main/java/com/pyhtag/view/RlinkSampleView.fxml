@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<TitledPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" styleClass="con" stylesheets="@link-sample.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pyhtag.view.LinkSampleViewController">
+<TitledPane fx:id="titledPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" styleClass="con" stylesheets="@link-sample.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pyhtag.view.LinkSampleViewController">
   <content>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="333.0" prefWidth="600.0">
          <children>
@@ -76,7 +76,7 @@
          <children>
             <HBox layoutX="502.0" layoutY="8.0" prefHeight="26.0" prefWidth="70.0" spacing="3.0" styleClass="title-content" AnchorPane.bottomAnchor="11.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="9.0">
                <children>
-                  <JFXButton fx:id="edit" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" prefHeight="15.0" prefWidth="15.0" styleClass="title-content-edit-button">
+                  <JFXButton fx:id="edit" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" onAction="#handleEdit" prefHeight="15.0" prefWidth="15.0" styleClass="title-content-edit-button">
                      <graphic>
                         <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -84,7 +84,7 @@
                            </image>
                         </ImageView>
                      </graphic></JFXButton>
-                  <JFXButton fx:id="delete" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" styleClass="title-content-delete-button">
+                  <JFXButton fx:id="delete" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" onAction="#handleDelete" styleClass="title-content-delete-button">
                      <graphic>
                         <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                            <image>
