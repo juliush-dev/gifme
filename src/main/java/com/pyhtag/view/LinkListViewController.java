@@ -7,9 +7,14 @@ import com.jfoenix.controls.JFXProgressBar;
 import com.pyhtag.model.LinkAndViewList;
 import com.pyhtag.util.BindingInitializator.LinkAndView;
 import com.pyhtag.util.Filter;
+import com.pyhtag.util.InvalidInput;
+import com.pyhtag.util.ValidInputList;
 import com.pyhtag.util.service.AddLinkService;
 import com.pyhtag.util.service.DownloadService;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ListChangeListener;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
@@ -18,6 +23,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -46,8 +52,11 @@ public class LinkListViewController {
 	private Label progressLabel;
 	@FXML
 	private Label badge;
+	@FXML
+	private TextField deleteSelectionField;
 
 	private AddDialogViewController addDialogViewController;
+	private BooleanProperty deleteToggle = new SimpleBooleanProperty(false);
 
 	public Accordion getUiView() {
 		return uiView;
@@ -63,6 +72,7 @@ public class LinkListViewController {
 	}
 
 	public void initialize() {
+		deleteSelectionField.visibleProperty().bind(deleteToggle);
 		uiView.getPanes().addListener((ListChangeListener<TitledPane>) c -> {
 			while (c.next()) {
 				if (c.wasRemoved()) {
@@ -107,9 +117,32 @@ public class LinkListViewController {
 		return addDialogViewController;
 	}
 
+//	@FXML
+//	private void handleDelteLinks() {
+//	}
+	
 	@FXML
-	private void handleDelteLinks() {
-
+	private void handleDeleteSelected() {
+		deleteToggle.set(!deleteToggle.get());
+		if (!deleteToggle.get()) {
+			if(!(deleteSelectionField.getText().isEmpty() || LinkAndViewList.get().isEmpty())) {
+				String text = deleteSelectionField.getText();
+				deleteSelectionField.setText("");
+				try {
+					int[] range = ValidInputList.processSelectedRange(text);
+					if(range[1] < LinkAndViewList.get().size()) {
+						for (int i = range[0]; i <= range[1]; i++) {
+							Filter.removeOne(range[0]);
+						}
+					}
+				} catch (InvalidInput e) {
+					e.printStackTrace();
+				}
+			}
+		} else {
+			System.out.println("Deletion opened");
+		}
+		
 	}
 
 	@FXML
@@ -156,6 +189,10 @@ public class LinkListViewController {
 					System.out.println("Adding panes in the ui");
 					uiView.getPanes().add(linkAndView.getPane());
 				}
+				System.out.println("Resume: ");
+				System.out.println("LinkAndViewList Size: " + LinkAndViewList.get().size());
+				System.out.println("UiView Size: " + uiView.getPanes().size());
+				
 			}
 		});
 		addLinkService.setOnRunning(new EventHandler<WorkerStateEvent>() {
@@ -168,6 +205,9 @@ public class LinkListViewController {
 			@Override
 			public void handle(WorkerStateEvent event) {
 				System.out.println("///// Cancelled");
+				System.out.println("----- " + event.getSource());
+				System.out.println("----- " + event.getSource().getMessage());
+				event.getSource().getException().printStackTrace();
 			}
 		});
 		addLinkService.setOnFailed(new EventHandler<WorkerStateEvent>() {
@@ -181,7 +221,7 @@ public class LinkListViewController {
 		});
 		addLinkService.start();
 	}
-
+	
 	public BorderPane getRoot() {
 		return root;
 	}

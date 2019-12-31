@@ -119,3 +119,20 @@
 }
 /**********END Control-bar config*************/
 /*********************************/
+
+/*************************/
+/*Edit Deletion field*/
+/************************/
+.deletion-field{
+    -fx-background-color: -fx-main-color;
+    -fx-border-color: #FF9999;
+    -fx-border-radius: 12%;
+    -fx-text-fill: -fx-second-color;
+}
+.deletion-field > *.text{
+    -fx-fill: white;
+    -fx-prompt-text-fill: -fx-second-color;
+    -fx-font-size: 10px;
+}
+/**********END Deletion field************/
+/*********************************/

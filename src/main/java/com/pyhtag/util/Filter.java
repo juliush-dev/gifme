@@ -34,8 +34,8 @@ public class Filter {
 				view.getPanes().remove(index);
 				list.remove(index);
 			});
+			System.out.println("Same size: " + (LinkAndViewList.get().size() == view.getPanes().size()));
 		}
-		System.out.println("Same size: " + (LinkAndViewList.get().size() == view.getPanes().size()));
 		toRemove.clear();
 		return list;
 	}
