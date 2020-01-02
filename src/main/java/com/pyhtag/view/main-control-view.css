@@ -1,0 +1,147 @@
+* {
+   -fx-main-color: #46424C;
+   -fx-second-color: #FFFF99;
+   -fx-default-transparent: transparent;
+   -fx-default-text-color: white;
+}
+.border-pane{
+    -fx-background-color: -fx-main-color;
+}
+
+*.text{
+    -fx-text-fill: -fx-second-color;
+    -fx-font-family: 'FiraCode Nerd Font';
+    -fx-font-style: normal;
+}
+
+*.label{
+    -fx-text-fill: -fx-second-color;
+    -fx-font-family: 'FiraCode Nerd Font';
+    -fx-font-style: normal;
+}
+
+.taskbar{
+    -fx-background-color: -fx-main-color;
+}
+
+.taskbar .badge{
+    -fx-border-color: -fx-second-color;
+    -fx-border-radius: 100%;
+    -fx-alignment: center;
+}
+/* main viewport */
+.anchor{
+    -fx-border-color: -fx-main-color;
+}
+/*************************/
+/*scroll-pane config*/
+/************************/
+.scroll-pane .viewport{
+    -fx-background-color: -fx-main-color;
+    -fx-background-radius: 0;
+    -fx-border-width: 0;
+}
+
+.scroll-pane .scroll-bar:vertical > .track{
+    -fx-background-color: -fx-main-color;
+    -fx-border-width: 0;
+}
+.scroll-pane .scroll-bar:vertical > .decrement-button > .decrement-arrow{
+    -fx-background-color: -fx-second-color;
+}
+
+.scroll-pane .scroll-bar:vertical > .increment-button > .increment-arrow{
+    -fx-background-color: -fx-second-color;
+}
+.scroll-pane .scroll-bar:vertical > .thumb{
+    -fx-background-color: -fx-second-color;
+    -fx-background-radius: 0;
+}
+.scroll-pane .scroll-bar:vertical > .track-background{
+    -fx-background-color: -fx-main-color;
+}
+/**********END scroll-pane config*************/
+/*********************************/
+
+.accor{
+    -fx-background-color: transparent;
+}
+.accordion > .titled-pane {
+    -fx-padding: 0 0 0.5em 0;
+}
+/*************************/
+/*Control-bar config*/
+/************************/
+.controlbar{
+    -fx-background-color: -fx-main-color;
+}
+
+.add-button{
+    -jfx-button-type: RAISED;
+    -fx-background-color: -fx-default-transparent;
+    -fx-content-display: graphic-only;
+    -fx-graphic: url("icon/add.png");
+    -fx-label-padding: 0em;
+}
+
+
+
+.add-button{
+    -jfx-button-type: RAISED;
+    -fx-background-color: -fx-default-transparent;
+    -fx-content-display: graphic-only;
+    -fx-label-padding: 0em;
+}
+.add-button > .jfx-rippler{
+    -jfx-mask-type: CIRCLE;
+    -jfx-rippler-fill: -fx-second-color;
+}
+.delete-button {
+    -jfx-button-type: RAISED;
+    -fx-background-color: -fx-default-transparent;
+    -fx-content-display: graphic-only;
+    -fx-label-padding: 0em;
+}
+.delete-button > .jfx-rippler{
+    -jfx-mask-type: CIRCLE;
+    -jfx-rippler-fill: #FF9999;
+}
+.process-button {
+    -jfx-button-type: RAISED;
+    -fx-background-color: -fx-default-transparent;
+    -fx-content-display: graphic-only;
+    -fx-graphic: url("icon/process.png");
+    -fx-label-padding: 0em;
+}
+.process-button > .jfx-rippler{
+    -jfx-mask-type: CIRCLE;
+    -jfx-rippler-fill: #99FF99;
+}
+/**********END Control-bar config*************/
+/*********************************/
+
+/*************************/
+/*Edit Deletion field*/
+/************************/
+.deletion-field{
+    -fx-background-color: -fx-main-color;
+    -fx-border-color: #FF9999;
+    -fx-border-radius: 12%;
+    -fx-text-fill: -fx-second-color;
+}
+.deletion-field > *.text{
+    -fx-fill: white;
+    -fx-prompt-text-fill: -fx-second-color;
+    -fx-font-size: 10px;
+}
+/**********END Deletion field************/
+/*********************************/
+
+/*************************/
+/*ProgressIndicator config*/
+/************************/
+.percentage{
+    -fx-fill: -fx-second-color;
+}
+/**********END ProgressIndicator config*************/
+/*********************************/

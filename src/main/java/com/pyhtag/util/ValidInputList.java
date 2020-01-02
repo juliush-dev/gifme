@@ -14,5 +14,19 @@ public interface ValidInputList {
 		}
 		return urls;
 	}
+	
+	static int[] processSelectedRange(String text) throws InvalidInput {
+		text = text.trim();
+		int[] range = new int[2];
+		try {
+			String[] rangeString = text.split("-");
+			System.out.println("Range to delete from " + rangeString[0] + " to " + rangeString[1]);
+			range[0] = Integer.valueOf(rangeString[0])-1;
+			range[1] = Integer.valueOf(rangeString[1])-1;
+		} catch (Exception e) {
+			throw new InvalidInput(e.getMessage());
+		}
+		return range;
+	}
 
 }

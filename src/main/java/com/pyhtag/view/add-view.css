@@ -1,0 +1,10 @@
+* {
+   -fx-main-color: #46424C;
+   -fx-second-color: #FFFF99;
+   -fx-default-transparent: transparent;
+   -fx-default-text-color: white;
+}
+
+.text-area > .scroll-pane:fitToWidth:fitToHeight > .viewport > .content > .text{
+    -fx-text-fill: -fx-second-color;
+}

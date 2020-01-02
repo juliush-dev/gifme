@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="101.0" prefWidth="445.0" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pyhtag.view.AddDialogViewController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="137.0" prefWidth="445.0" stylesheets="@add-view.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pyhtag.view.AddDialogViewController">
    <children>
-      <TextArea fx:id="textArea" prefHeight="263.0" prefWidth="445.0" wrapText="true" />
-      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+      <TextArea fx:id="textArea" prefHeight="99.0" prefWidth="445.0" promptText="Youtube URLS" wrapText="true" />
+      <AnchorPane prefHeight="37.0" prefWidth="445.0" style="-fx-background-color: #46424C;">
          <children>
-            <Button fx:id="done" layoutX="196.0" layoutY="1.0" mnemonicParsing="false" onAction="#handleDone" text="Done" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="196.0" AnchorPane.rightAnchor="196.0" AnchorPane.topAnchor="1.0" />
+            <JFXButton fx:id="done" buttonType="RAISED" layoutX="196.0" layoutY="1.0" onAction="#handleDone" ripplerFill="#99ff99" style="-fx-background-color: #FFFF99;" text="Done" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="196.0" AnchorPane.rightAnchor="196.0" AnchorPane.topAnchor="10.0" />
          </children>
       </AnchorPane>
    </children>

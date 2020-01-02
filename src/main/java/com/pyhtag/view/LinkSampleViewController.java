@@ -1,143 +1,170 @@
 package com.pyhtag.view;
 
-import java.io.IOException;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXToggleButton;
+import com.pyhtag.model.Link;
+import com.pyhtag.model.LinkAndViewList;
+import com.pyhtag.util.BindingInitializator.LinkAndView;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Accordion;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
-import javafx.scene.layout.AnchorPane;
 
 /**
  * LinkSampleViewController
  */
-public class LinkSampleViewController{
+public class LinkSampleViewController {
 
-    @FXML
-    private TitledPane url;
-    @FXML
-    private TabPane innerRoot;
-    @FXML
-    private CheckBox video;
-    @FXML
-    private CheckBox audio;
-    @FXML
-    private CheckBox videoThumbnail;
-    @FXML
-    private CheckBox audioThumbnail;
-    @FXML
-    private ComboBox<String> videoIdSelection;
-    @FXML
-    private Button knowMore;
-    @FXML
-    private ComboBox<String> audioFormatSelection;
-    @FXML
-    private AnchorPane videoSettingView;
-    @FXML
-    private AnchorPane audioSettingView;
+	/**
+	 * root node
+	 */
+	@FXML
+	private TitledPane titledPane;
 
-    @FXML
-    private void initialize() {
+	/**
+	 * control fields;
+	 */
+	@FXML
+	private TextField title;
+	
+	@FXML
+	private Label badgeContent;
+	@FXML
+	private JFXButton edit;
+	@FXML
+	private JFXButton delete;
+	/**
+	 * video fields
+	 */
+	@FXML
+	private JFXToggleButton video;
+	@FXML
+	private JFXToggleButton videoThumbnail;
+	@FXML
+	private JFXComboBox<String> videoComboSelection;
 
-    }
+	/**
+	 * audio fields
+	 */
+	@FXML
+	private JFXToggleButton audio;
+	@FXML
+	private JFXToggleButton audioThumbnail;
+	@FXML
+	private JFXComboBox<String> audioComboSelection;
+	
+	private LinkAndView linkAndView = new LinkAndView(null, titledPane);
 
-    public TitledPane getUrl() {
-        return this.url;
-    }
+	@FXML
+	private void initialize() {
+		linkAndView.setViewController(this);
+	}
+	
+	@FXML
+	private void handleEdit() {
+		
+	}
+	
+	@FXML
+	private void handleDelete() {
+		LinkAndViewList.delete(this);
+	}
 
-    public void setUrl(TitledPane url) {
-        this.url = url;
-    }
+	public TitledPane getTitledPane() {
+		return titledPane;
+	}
 
-    public TabPane getInnerRoot() {
-        return this.innerRoot;
-    }
+	public void setTitledPane(TitledPane titledPane) {
+		this.titledPane = titledPane;
+	}
 
-    public void setInnerRoot(TabPane innerRoot) {
-        this.innerRoot = innerRoot;
-    }
+	public TextField getTitle() {
+		return title;
+	}
 
-    public CheckBox getVideo() {
-        return this.video;
-    }
+	public void setTitle(TextField title) {
+		this.title = title;
+	}
 
-    public void setVideo(CheckBox video) {
-        this.video = video;
-    }
+	public Label getBadgeContent() {
+		return badgeContent;
+	}
 
-    public CheckBox getAudio() {
-        return this.audio;
-    }
+	public void setBadgeContent(Label badgeContent) {
+		this.badgeContent = badgeContent;
+	}
 
-    public void setAudio(CheckBox audio) {
-        this.audio = audio;
-    }
+	public JFXButton getEdit() {
+		return edit;
+	}
 
-    public CheckBox getVideoThumbnail() {
-        return this.videoThumbnail;
-    }
+	public void setEdit(JFXButton edit) {
+		this.edit = edit;
+	}
 
-    public void setVideoThumbnail(CheckBox videoThumbnail) {
-        this.videoThumbnail = videoThumbnail;
-    }
+	public JFXButton getDelete() {
+		return delete;
+	}
 
-    public CheckBox getAudioThumbnail() {
-        return this.audioThumbnail;
-    }
+	public void setDelete(JFXButton delete) {
+		this.delete = delete;
+	}
 
-    public void setAudioThumbnail(CheckBox audioThumbnail) {
-        this.audioThumbnail = audioThumbnail;
-    }
+	public JFXToggleButton getVideo() {
+		return video;
+	}
 
-    public ComboBox<String> getVideoIdSelection() {
-        return this.videoIdSelection;
-    }
+	public void setVideo(JFXToggleButton video) {
+		this.video = video;
+	}
 
-    public void setVideoIdSelection(ComboBox<String> videoIdSelection) {
-        this.videoIdSelection = videoIdSelection;
-    }
+	public JFXToggleButton getVideoThumbnail() {
+		return videoThumbnail;
+	}
 
-    public Button getKnowMore() {
-        return this.knowMore;
-    }
+	public void setVideoThumbnail(JFXToggleButton videothumbnail) {
+		this.videoThumbnail = videothumbnail;
+	}
 
-    public void setKnowMore(Button knowMore) {
-        this.knowMore = knowMore;
-    }
+	public JFXComboBox<String> getVideoComboSelection() {
+		return videoComboSelection;
+	}
 
-    public ComboBox<String> getAudioFormatSelection() {
-        return this.audioFormatSelection;
-    }
+	public void setVideoComboSelection(JFXComboBox<String> videoIdSelection) {
+		this.videoComboSelection = videoIdSelection;
+	}
 
-    public void setAudioFormatSelection(ComboBox<String> audioFormatSelection) {
-        this.audioFormatSelection = audioFormatSelection;
-    }
+	public JFXToggleButton getAudio() {
+		return audio;
+	}
 
-    public AnchorPane getVideoSettingView() {
-        return this.videoSettingView;
-    }
+	public void setAudio(JFXToggleButton audio) {
+		this.audio = audio;
+	}
 
-    public void setSettingView(AnchorPane settingView) {
-        this.videoSettingView = settingView;
-    }
+	public JFXToggleButton getAudioThumbnail() {
+		return audioThumbnail;
+	}
 
-    public AnchorPane getAudioSettingView() {
-        return this.audioSettingView;
-    }
+	public void setAudioThumbnail(JFXToggleButton audiothumbnail) {
+		this.audioThumbnail = audiothumbnail;
+	}
 
-    public void setAudioSettingView(AnchorPane audioSettingView) {
-        this.audioSettingView = audioSettingView;
-    }
+	public JFXComboBox<String> getAudioComboSelection() {
+		return audioComboSelection;
+	}
 
-	public static LinkSampleViewController getInstance() throws IOException {
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(LinkSampleViewController.class.getResource("LinkSampleView.fxml"));
-		TitledPane root = loader.load();
-		return loader.getController();
+	public void setAudioComboSelection(JFXComboBox<String> audioIdSelection) {
+		this.audioComboSelection = audioIdSelection;
+	}
+
+	public void setLink(Link link) {
+		linkAndView.setLink(link);
+	}
+	public LinkAndView link() {
+		return linkAndView;
 	}
 
 }

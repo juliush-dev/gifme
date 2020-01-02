@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="690.0" styleClass="border-pane" stylesheets="@main-control-view.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pyhtag.view.LinkListViewController">
+<fx:define>
+      <fx:include fx:id="linkSample" source="RlinkSampleView.fxml" />
+   </fx:define>
+   <right>
+      <VBox alignment="CENTER" prefHeight="358.0" prefWidth="53.0" spacing="40.0" styleClass="controlbar" BorderPane.alignment="CENTER">
+         <children>
+            <JFXButton fx:id="add" onAction="#handleAddNewLinks" styleClass="add-button">
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@icon/add.png" />
+                     </image>
+                  </ImageView>
+               </graphic></JFXButton>
+            <JFXButton fx:id="delete" layoutX="10.0" layoutY="10.0" onAction="#handleDeleteSelected" styleClass="delete-button">
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@icon/delete.png" />
+                     </image>
+                  </ImageView>
+               </graphic></JFXButton>
+            <JFXButton fx:id="process" layoutX="10.0" layoutY="37.0" onAction="#handleProcessLinks" styleClass="process-button">
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@icon/process.png" />
+                     </image>
+                  </ImageView>
+               </graphic></JFXButton>
+         </children>
+      </VBox>
+   </right>
+   <bottom>
+      <HBox alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="690.0" spacing="20.0" styleClass="taskbar" BorderPane.alignment="CENTER">
+         <children>
+            <StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="32.0" prefWidth="32.0" styleClass="badge">
+               <children>
+                  <Label fx:id="badge" text="0" />
+               </children>
+               <HBox.margin>
+                  <Insets bottom="5.0" top="5.0" />
+               </HBox.margin>
+            </StackPane>
+            <Label fx:id="message" prefHeight="17.0" prefWidth="501.0" text="Label" />
+            <ProgressIndicator fx:id="progressBar" prefHeight="42.0" prefWidth="45.0" progress="0.0" />
+         </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <padding>
+            <Insets left="15.0" right="10.0" />
+         </padding>
+      </HBox>
+   </bottom>
+   <center>
+      <StackPane alignment="CENTER_RIGHT" prefHeight="458.0" prefWidth="632.0" BorderPane.alignment="CENTER">
+         <children>
+            <ScrollPane prefHeight="200.0" prefWidth="200.0">
+               <content>
+                  <Accordion fx:id="uiView" prefWidth="600.0" />
+               </content>
+            </ScrollPane>
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="28.0" prefWidth="91.0">
+               <children>
+                  <TextField fx:id="deleteSelectionField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="28.0" prefWidth="85.0" promptText="Offset" styleClass="deletion-field" />
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="dataRetrievingProgressView" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="447.0" prefWidth="641.0">
+               <children>
+                  <VBox alignment="CENTER" layoutX="115.0" layoutY="204.0" spacing="10.0" />
+                  <ProgressIndicator fx:id="retrievingProgress" layoutX="304.0" layoutY="208.0" progress="0.0" />
+               </children>
+            </AnchorPane>
+         </children>
+      </StackPane>
+   </center>
+</BorderPane>
