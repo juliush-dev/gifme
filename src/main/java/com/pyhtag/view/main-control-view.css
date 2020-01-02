@@ -26,7 +26,7 @@
 
 .taskbar .badge{
     -fx-border-color: -fx-second-color;
-    -fx-border-radius: 5em;
+    -fx-border-radius: 100%;
     -fx-alignment: center;
 }
 /* main viewport */
@@ -135,4 +135,13 @@
     -fx-font-size: 10px;
 }
 /**********END Deletion field************/
+/*********************************/
+
+/*************************/
+/*ProgressIndicator config*/
+/************************/
+.percentage{
+    -fx-fill: -fx-second-color;
+}
+/**********END ProgressIndicator config*************/
 /*********************************/

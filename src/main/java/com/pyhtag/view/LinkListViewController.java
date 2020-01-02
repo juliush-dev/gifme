@@ -3,7 +3,6 @@ package com.pyhtag.view;
 import java.io.IOException;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXProgressBar;
 import com.pyhtag.model.LinkAndViewList;
 import com.pyhtag.util.BindingInitializator.LinkAndView;
 import com.pyhtag.util.Filter;
@@ -13,18 +12,17 @@ import com.pyhtag.util.service.AddLinkService;
 import com.pyhtag.util.service.DownloadService;
 
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ListChangeListener;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -47,13 +45,19 @@ public class LinkListViewController {
 	@FXML
 	private JFXButton process;
 	@FXML
-	private JFXProgressBar progressBar;
+	private ProgressIndicator progressBar;
 	@FXML
-	private Label progressLabel;
+	private Label message;
 	@FXML
 	private Label badge;
 	@FXML
 	private TextField deleteSelectionField;
+	@FXML
+	private AnchorPane dataRetrievingProgressView;
+	@FXML
+	private ProgressIndicator retrievingProgress;
+	@FXML
+	private Label requestStatus;
 
 	private AddDialogViewController addDialogViewController;
 	private BooleanProperty deleteToggle = new SimpleBooleanProperty(false);
@@ -72,21 +76,30 @@ public class LinkListViewController {
 	}
 
 	public void initialize() {
+		dataRetrievingProgressView.setVisible(false);
 		deleteSelectionField.visibleProperty().bind(deleteToggle);
+		message.setText("RAS");
+		updateFrontAndBackEnd();
+	}
+
+	private void updateFrontAndBackEnd() {
 		uiView.getPanes().addListener((ListChangeListener<TitledPane>) c -> {
-			while (c.next()) {
-				if (c.wasRemoved()) {
-					for (int i = c.getFrom(); i < c.getTo(); i++) {
-						if (c.getRemoved().get(i) == LinkAndViewList.get().get(i).getPane()) {
-							LinkAndViewList.get().remove(i);
+			if (!uiView.getPanes().isEmpty()) {
+				while (c.next()) {
+					if (c.wasRemoved()) {
+						for (int i = c.getFrom(); i < c.getTo(); i++) {
+							if (c.getRemoved().get(i) == LinkAndViewList.get().get(i).getPane()) {
+								LinkAndViewList.get().remove(i);
+							}
 						}
 					}
 				}
-			}
-			for (int i = 0; i < uiView.getPanes().size(); i++) {
-				if (uiView.getPanes().get(i) == LinkAndViewList.get().get(i).getPane()) {
-					LinkAndViewList.get().get(i).getViewController().getBadgeContent().setText("" + (i + 1));
+				for (int i = 0; i < uiView.getPanes().size(); i++) {
+					if (uiView.getPanes().get(i) == LinkAndViewList.get().get(i).getPane()) {
+						LinkAndViewList.get().get(i).getViewController().getBadgeContent().setText("" + (i + 1));
+					}
 				}
+				badge.setText(String.valueOf(LinkAndViewList.get().size()));
 			}
 		});
 	}
@@ -117,20 +130,16 @@ public class LinkListViewController {
 		return addDialogViewController;
 	}
 
-//	@FXML
-//	private void handleDelteLinks() {
-//	}
-	
 	@FXML
 	private void handleDeleteSelected() {
 		deleteToggle.set(!deleteToggle.get());
 		if (!deleteToggle.get()) {
-			if(!(deleteSelectionField.getText().isEmpty() || LinkAndViewList.get().isEmpty())) {
+			if (!(deleteSelectionField.getText().isEmpty() || LinkAndViewList.get().isEmpty())) {
 				String text = deleteSelectionField.getText();
 				deleteSelectionField.setText("");
 				try {
 					int[] range = ValidInputList.processSelectedRange(text);
-					if(range[1] < LinkAndViewList.get().size()) {
+					if (range[1] < LinkAndViewList.get().size()) {
 						for (int i = range[0]; i <= range[1]; i++) {
 							Filter.removeOne(range[0]);
 						}
@@ -142,86 +151,68 @@ public class LinkListViewController {
 		} else {
 			System.out.println("Deletion opened");
 		}
-		
+
+	}
+
+	public void addToLinkList(String[] urls) {
+		AddLinkService addLinkService = new AddLinkService(urls);
+		addLinkService.setOnRunning(event -> {
+			retrievingProgress.progressProperty().bind(addLinkService.progressProperty());
+			message.textProperty().bind(addLinkService.messageProperty());
+			dataRetrievingProgressView.setVisible(true);
+		});
+		addLinkService.setOnSucceeded(event -> {
+			for (LinkAndView linkAndView : LinkAndViewList.get()) {
+				uiView.getPanes().add(linkAndView.getPane());
+			}
+			badge.setText(String.valueOf(LinkAndViewList.get().size()));
+			dataRetrievingProgressView.setVisible(false);
+		});
+		addLinkService.setOnFailed(event -> {
+			System.out.println("----- Failed");
+			System.out.println("----- " + event.getSource());
+			System.out.println("----- " + event.getSource().getMessage());
+			event.getSource().getException().printStackTrace();
+		});
+
+		addLinkService.start();
 	}
 
 	@FXML
 	private void handleProcessLinks() {
 		Filter.filter();
-		for (LinkAndView linkAndView : LinkAndViewList.get()) {
-			System.out.println("to download: " + linkAndView.getLink().getTitle());
-		}
-		System.out.println("*******************\n");
 		if (!LinkAndViewList.get().isEmpty()) {
+			DownloadService.setSize(LinkAndViewList.get().size());
 			for (LinkAndView linkAndView : LinkAndViewList.get()) {
 				DownloadService downloadService = new DownloadService(linkAndView.getLink());
-				progressBar.progressProperty().bind(downloadService.progressProperty());
-				downloadService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-					@Override
-					public void handle(WorkerStateEvent t) {
-						System.out.println("done:" + t.getSource().getValue());
-						int i = downloadService.getStatus() + 1;
-						downloadService.setStatus(i);
-						if (downloadService.getStatus() == LinkAndViewList.get().size()) {
-							progressLabel.setText("Done");
-						} else {
-							progressLabel.setText(i + "%");
-						}
-					}
+				downloadService.setOnRunning(event -> {
+					message.textProperty().bind(downloadService.messageProperty());
+					progressBar.progressProperty().bind(downloadService.progressProperty());
 				});
 				downloadService.start();
+				downloadService.setOnSucceeded(event -> {
+					uiView.getPanes().clear();
+					LinkAndViewList.get().clear();
+					badge.setText("0");
+					message.textProperty().unbind();
+					message.setText("Download done!");
+				});
+				
+				downloadService.setOnFailed(event -> {
+					event.getSource().getException().printStackTrace();
+				});
 			}
+			
+
 
 		} else {
 			progressBar.progressProperty().unbind();
 			progressBar.setProgress(0);
-			System.err.println("No Link to download");
-
+			message.textProperty().unbind();
+			message.setText("No Link to download");
 		}
 	}
 
-	public void addToLinkList(String[] urls) {
-		AddLinkService addLinkService = new AddLinkService(urls);
-		addLinkService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-			@Override
-			public void handle(WorkerStateEvent event) {
-				for (LinkAndView linkAndView : LinkAndViewList.get()) {
-					System.out.println("Adding panes in the ui");
-					uiView.getPanes().add(linkAndView.getPane());
-				}
-				System.out.println("Resume: ");
-				System.out.println("LinkAndViewList Size: " + LinkAndViewList.get().size());
-				System.out.println("UiView Size: " + uiView.getPanes().size());
-				
-			}
-		});
-		addLinkService.setOnRunning(new EventHandler<WorkerStateEvent>() {
-			@Override
-			public void handle(WorkerStateEvent event) {
-				System.out.println("+++++ Running");
-			}
-		});
-		addLinkService.setOnCancelled(new EventHandler<WorkerStateEvent>() {
-			@Override
-			public void handle(WorkerStateEvent event) {
-				System.out.println("///// Cancelled");
-				System.out.println("----- " + event.getSource());
-				System.out.println("----- " + event.getSource().getMessage());
-				event.getSource().getException().printStackTrace();
-			}
-		});
-		addLinkService.setOnFailed(new EventHandler<WorkerStateEvent>() {
-			@Override
-			public void handle(WorkerStateEvent event) {
-				System.out.println("----- Failed");
-				System.out.println("----- " + event.getSource());
-				System.out.println("----- " + event.getSource().getMessage());
-				event.getSource().getException().printStackTrace();
-			}
-		});
-		addLinkService.start();
-	}
-	
 	public BorderPane getRoot() {
 		return root;
 	}

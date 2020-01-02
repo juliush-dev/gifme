@@ -16,6 +16,7 @@ public class AddLinkService extends Service<Void> {
 
 	BindingInitializator b = new BindingInitializator();
 	String[] urls;
+	int futureSize = 0;
 
 	public AddLinkService(String[] urls) {
 		this.urls = urls;
@@ -27,9 +28,15 @@ public class AddLinkService extends Service<Void> {
 			@Override
 			protected Void call() throws Exception {
 				List<CompletableFuture<LinkAndView>> futures = b.process(urls);
+				int progress = 0;
+				futureSize = futures.size();
 				for (CompletableFuture<LinkAndView> future : futures) {
+					if(progress < futureSize) {
+						updateMessage("Retrieving data from youtube...");
+					}
 					getFrom(future);
 				}
+				updateMessage("All done!");
 				return null;
 			}
 		};
@@ -52,4 +59,10 @@ public class AddLinkService extends Service<Void> {
 			e.printStackTrace();
 		}
 	}
+
+	public int getFutureSize() {
+		return futureSize;
+	}
+	
+	
 }

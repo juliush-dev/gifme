@@ -40,5 +40,4 @@ public class LinkAndViewList {
 	public static LinkListViewController getUi() {
 		return linkListViewController;
 	}
-
 }

@@ -16,16 +16,68 @@ import com.pyhtag.model.Link;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 
 public class DownloadService extends Service<Boolean> {
+
+	private final class DownloadTask extends Task<Boolean> {
+		@Override
+		protected Boolean call() throws Exception {
+			if (this.isCancelled()) {
+				updateMessage(this.getMessage());
+				return false;
+			}
+			return download(link.getValue());
+		}
+
+		public boolean download(Link link) throws IOException {
+			progress.set(0);
+			List<String> commandForVideo = videoCommand(link);
+			List<String> commandForAudio = audioCommand(link);
+			boolean accomplisched = true;
+			if (!commandForVideo.isEmpty()) {
+				accomplisched = start(commandForVideo);
+			}
+			if (!commandForAudio.isEmpty()) {
+				accomplisched = start(commandForAudio);
+			}
+			return accomplisched;
+		}
+
+		private boolean start(List<String> command) throws IOException {
+			boolean accomplisched = false;
+			ProcessBuilder pb = new ProcessBuilder(command);
+			pb.redirectErrorStream(true);
+			Process process = null;
+			process = pb.start();
+			try (BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+				Pattern pattern = Pattern.compile("(?<counter>\\d+\\.\\d+)(%)");
+				String line;
+				while ((line = br.readLine()) != null) {
+					Matcher matcher = pattern.matcher(line);
+					System.out.println(line);
+					if (matcher.find()) {
+						String group = matcher.group("counter");
+						synchronized (this) {
+							double newValue = Double.parseDouble(group) / 100;
+							updateProgress(newValue, 1);
+						}
+					} else if (Pattern.matches(".+ has already been downloaded.+", line)) {
+						alreadyDownloaded.set(true);
+						updateMessage("has already been downloaded");
+					}
+				}
+				accomplisched = true;
+			}
+			return accomplisched;
+		}
+	}
+
 
 	class LinkProperty implements ReadOnlyProperty<Link> {
 
@@ -67,14 +119,19 @@ public class DownloadService extends Service<Boolean> {
 			return link.getUrl();
 		}
 
+		public void set(Link link) {
+			this.link = link;
+			
+		}
+
 	}
 
 	private Path downloadPath = Paths.get(System.getProperty("user.home"), "ForYou");
 	private static DoubleProperty progress = new SimpleDoubleProperty();
-	private final LinkProperty link;
+	private LinkProperty link = new LinkProperty(new Link(""));
 	private BooleanProperty alreadyDownloaded = new SimpleBooleanProperty(false);
-	private static IntegerProperty status = new SimpleIntegerProperty();
-
+	private static int size = 0;
+	
 	public DownloadService(Link link) {
 		try {
 			if (Files.notExists(downloadPath)) {
@@ -83,7 +140,7 @@ public class DownloadService extends Service<Boolean> {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		this.link = new LinkProperty(link);
+		this.link.set(link);
 	}
 
 	private List<String> prepareCommand() {
@@ -163,56 +220,7 @@ public class DownloadService extends Service<Boolean> {
 
 	@Override
 	protected Task<Boolean> createTask() {
-		final Link _link = getLink();
-		return new Task<Boolean>() {
-			@Override
-			protected Boolean call() throws Exception {
-				if (this.isCancelled()) {
-					System.err.println(this.getMessage());
-					return false;
-				}
-				return download(_link);
-			}
-			public boolean download(Link link) throws IOException {
-				progress.set(0);
-				List<String> commandForVideo = videoCommand(link);
-				List<String> commandForAudio = audioCommand(link);
-				boolean accomplisched = true;
-				if (!commandForVideo.isEmpty()) {
-					accomplisched = start(commandForVideo);
-				}
-				if (!commandForAudio.isEmpty()) {
-					accomplisched = start(commandForAudio);
-				}
-				return accomplisched;
-			}
-			private boolean start(List<String> command) throws IOException {
-				boolean accomplisched = false;
-				ProcessBuilder pb = new ProcessBuilder(command);
-				pb.redirectErrorStream(true);
-				Process process = null;
-				process = pb.start();
-				try (BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-					Pattern pattern = Pattern.compile("(?<counter>\\d+\\.\\d+)(%)");
-					String line;
-					while ((line = br.readLine()) != null) {
-						Matcher matcher = pattern.matcher(line);
-						System.out.println(line);
-						if (matcher.find()) {
-							String group = matcher.group("counter");
-							synchronized (this) {
-								double newValue = Double.parseDouble(group) / 100;
-								updateProgress(newValue, 1);
-							}
-						} else if (Pattern.matches("has already been downloaded", line)) {
-							alreadyDownloaded.set(true);
-						}
-					}
-					accomplisched = true;
-				}
-				return accomplisched;
-			}
-		};
+		return new DownloadTask();
 	}
 
 	public final LinkProperty linkProperty() {
@@ -223,18 +231,12 @@ public class DownloadService extends Service<Boolean> {
 		return this.linkProperty().getValue();
 	}
 
-	public final IntegerProperty statusProperty() {
-		return DownloadService.status;
+	public static int getSize() {
+		return size;
 	}
-	
 
-	public final int getStatus() {
-		return this.statusProperty().get();
-	}
-	
-
-	public final void setStatus(final int status) {
-		this.statusProperty().set(status);
+	public static void setSize(int size) {
+		DownloadService.size = size;
 	}
 
 }
