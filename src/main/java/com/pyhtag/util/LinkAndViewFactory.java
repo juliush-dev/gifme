@@ -1,5 +1,6 @@
 package com.pyhtag.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -52,7 +53,8 @@ public class LinkAndViewFactory implements Function<Link, LinkAndView> {
 		MapControllerView mapControllerView = null;
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("../view/RlinkSampleView.fxml"));
+			//loader.setLocation(getClass().getResource("../view/RlinkSampleView.fxml"));
+			loader.setLocation(new File("src/main/java/com/pyhtag/view/RlinkSampleView.fxml").toURI().toURL());
 			viewSample = loader.load();
 			System.out.println(viewSample.getStyleClass());
 			LinkSampleViewController viewSampleController = loader.getController();

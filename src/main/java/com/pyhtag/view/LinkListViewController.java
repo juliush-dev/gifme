@@ -1,5 +1,6 @@
 package com.pyhtag.view;
 
+import java.io.File;
 import java.io.IOException;
 
 import com.jfoenix.controls.JFXButton;
@@ -106,9 +107,9 @@ public class LinkListViewController {
 
 	public void showAddDialogView() {
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("AddDialogView.fxml"));
 		VBox page = new VBox();
 		try {
+			loader.setLocation(new File("src/main/java/com/pyhtag/view/AddDialogView.fxml").toURI().toURL());
 			page = (VBox) loader.load();
 		} catch (IOException e) {
 			e.printStackTrace();

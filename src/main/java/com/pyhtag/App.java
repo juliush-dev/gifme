@@ -1,6 +1,7 @@
 package com.pyhtag;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -46,7 +47,7 @@ public class App extends Application {
         try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(App.class.getResource("view/RrootView.fxml"));
+            loader.setLocation(new File("src/main/java/com/pyhtag/view/RrootView.fxml").toURI().toURL());
             rootLayout = (BorderPane) loader.load();
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
